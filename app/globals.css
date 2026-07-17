@@ -10,6 +10,17 @@
   --color-cream: #fdf4e6;
   --font-sans: var(--font-sarabun);
   --font-display: var(--font-playfair);
+
+  /* ponytail: -50% works because the track renders the list twice — the loop point is invisible. */
+  --animate-marquee: marquee 60s linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 /* Semantic tokens flip per mode. Components use these, never raw brand colors. */

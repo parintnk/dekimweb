@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FiHeart, FiShield, FiUser, FiZap } from "react-icons/fi";
 import HeroMobile from "./components/hero-mobile";
 import Navbar from "./components/navbar";
+import Results from "./components/results";
 import Services from "./components/services";
 
 const trust = [
@@ -112,6 +113,7 @@ export default function Home() {
         </div>
 
         <Services />
+        <Results />
       </main>
     </>
   );
