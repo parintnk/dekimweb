@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiHeart, FiShield, FiUser, FiZap } from "react-icons/fi";
+import Doctor from "./components/doctor";
 import HeroMobile from "./components/hero-mobile";
 import Navbar from "./components/navbar";
 import Results from "./components/results";
@@ -114,6 +115,7 @@ export default function Home() {
 
         <Services />
         <Results />
+        <Doctor />
       </main>
     </>
   );
