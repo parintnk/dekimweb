@@ -28,7 +28,17 @@ export default function RootLayout({
     <html
       lang="th"
       className={`${playfair.variable} ${sarabun.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* ponytail: runs before paint so dark mode never flashes white. Inline is the point — a
+            deferred script would paint light first. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.theme;if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme:dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

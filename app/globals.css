@@ -1,25 +1,66 @@
 @import "tailwindcss";
 
+/* ponytail: manual toggle, not prefers-color-scheme alone — the script in layout.tsx sets .dark */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Brand colors never change between modes — they ARE the brand. */
 @theme {
   --color-navy: #142165;
   --color-gold: #fabd11;
-  /* ponytail: brand gold is 1.6:1 on cream — decorative only. gold-ink is the 4.6:1 text/icon tone. */
-  --color-gold-ink: #8c6a05;
   --color-cream: #fdf4e6;
-  --color-lightgray: #f5f6fa;
-  --color-textgray: #4a5568;
   --font-sans: var(--font-sarabun);
   --font-display: var(--font-playfair);
 }
 
+/* Semantic tokens flip per mode. Components use these, never raw brand colors. */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink: var(--ink);
+  --color-ink-body: var(--ink-body);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-brand: var(--brand);
+  --color-on-brand: var(--on-brand);
+}
+
+:root {
+  --surface: #ffffff;
+  --surface-2: #fdf4e6;
+  --surface-3: #f5f6fa;
+  --ink: #142165;
+  --ink-body: #4a5568;
+  --line: rgb(0 0 0 / 0.07);
+  /* ponytail: brand gold is 1.6:1 on cream — decorative only. This is the 4.6:1 text/icon tone. */
+  --accent: #8c6a05;
+  --brand: #142165;
+  --on-brand: #ffffff;
+  --ring: #142165;
+}
+
+.dark {
+  --surface: #0b1024;
+  --surface-2: #121a38;
+  --surface-3: #1b2450;
+  --ink: #f3efe4;
+  --ink-body: #b6bfd8;
+  --line: rgb(255 255 255 / 0.1);
+  /* On dark the brand gold clears 10:1, so the decorative tone becomes the readable one. */
+  --accent: #fabd11;
+  --brand: #fabd11;
+  --on-brand: #142165;
+  --ring: #fabd11;
+}
+
 body {
-  background: #ffffff;
-  color: var(--color-textgray);
+  background: var(--surface);
+  color: var(--ink-body);
   font-family: var(--font-sans);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-navy);
+  outline: 2px solid var(--ring);
   outline-offset: 3px;
   border-radius: 2px;
 }

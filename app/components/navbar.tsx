@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HiOutlineMenu } from "react-icons/hi";
+import ThemeToggle from "./theme-toggle";
 
 const links = [
   { label: "หน้าแรก", href: "#", current: true },
@@ -13,11 +14,15 @@ const links = [
 
 function Logo() {
   return (
-    <Link href="#" className="block leading-none" aria-label="Dr. KIM Clinic หน้าแรก">
-      <span className="font-display text-2xl tracking-wide text-navy">
+    <Link
+      href="#"
+      className="block leading-none"
+      aria-label="Dr. KIM Clinic หน้าแรก"
+    >
+      <span className="font-display text-2xl tracking-wide text-ink">
         Dr. <span className="font-bold">KIM</span>
       </span>
-      <span className="mt-1 flex items-center gap-2 text-[0.6rem] tracking-[0.35em] text-gold-ink">
+      <span className="mt-1 flex items-center gap-2 text-[0.6rem] tracking-[0.35em] text-accent">
         <span className="h-px flex-1 bg-gold" />
         CLINIC
         <span className="h-px flex-1 bg-gold" />
@@ -28,10 +33,10 @@ function Logo() {
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-40 border-b border-black/5 bg-white/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur-md">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-3 focus:z-50 focus:rounded-md focus:bg-navy focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-3 focus:z-50 focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-sm focus:text-on-brand"
       >
         ข้ามไปยังเนื้อหาหลัก
       </a>
@@ -45,10 +50,10 @@ export default function Navbar() {
               <Link
                 href={l.href}
                 aria-current={l.current ? "page" : undefined}
-                className={`relative block px-3 py-3 text-sm transition-colors duration-200 hover:text-navy after:absolute after:inset-x-3 after:bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-200 hover:after:scale-x-100 ${
+                className={`relative block px-3 py-3 text-sm transition-colors duration-200 hover:text-ink after:absolute after:inset-x-3 after:bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-200 hover:after:scale-x-100 ${
                   l.current
-                    ? "font-medium text-navy after:scale-x-100"
-                    : "text-textgray"
+                    ? "font-medium text-ink after:scale-x-100"
+                    : "text-ink-body"
                 }`}
               >
                 {l.label}
@@ -58,27 +63,29 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-1">
+          <ThemeToggle />
+
           <Link
             href="#booking"
-            className="hidden rounded-full bg-navy px-6 py-3 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-navy/90 hover:shadow-md active:scale-[0.98] sm:block"
+            className="hidden rounded-full bg-brand px-6 py-3 text-sm font-medium text-on-brand shadow-sm transition-all duration-200 hover:opacity-90 hover:shadow-md active:scale-[0.98] sm:block"
           >
             จองคิวออนไลน์
           </Link>
 
           {/* ponytail: native <details> mobile menu — no client JS, no state. Swap for a client component if it needs animation. */}
           <details className="relative lg:hidden">
-            <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full text-navy transition-colors duration-200 hover:bg-cream [&::-webkit-details-marker]:hidden">
+            <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full text-ink transition-colors duration-200 hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
               <HiOutlineMenu size={24} aria-hidden />
               <span className="sr-only">เปิดเมนู</span>
             </summary>
-            <ul className="absolute right-0 mt-3 w-56 rounded-2xl border border-black/5 bg-white py-2 shadow-xl">
+            <ul className="absolute right-0 mt-3 w-56 rounded-2xl border border-line bg-surface py-2 shadow-xl">
               {links.map((l) => (
                 <li key={l.label}>
                   <Link
                     href={l.href}
                     aria-current={l.current ? "page" : undefined}
-                    className={`block px-5 py-3 text-sm transition-colors duration-200 hover:bg-cream hover:text-navy ${
-                      l.current ? "font-medium text-navy" : "text-textgray"
+                    className={`block px-5 py-3 text-sm transition-colors duration-200 hover:bg-surface-2 hover:text-ink ${
+                      l.current ? "font-medium text-ink" : "text-ink-body"
                     }`}
                   >
                     {l.label}
@@ -88,7 +95,7 @@ export default function Navbar() {
               <li className="px-5 pb-1 pt-2 sm:hidden">
                 <Link
                   href="#booking"
-                  className="block rounded-full bg-navy px-4 py-3 text-center text-sm font-medium text-white"
+                  className="block rounded-full bg-brand px-4 py-3 text-center text-sm font-medium text-on-brand"
                 >
                   จองคิวออนไลน์
                 </Link>
