@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiHeart, FiShield, FiUser, FiZap } from "react-icons/fi";
+import ContactFab from "./components/contact-fab";
 import Doctor from "./components/doctor";
+import Footer from "./components/footer";
 import HeroMobile from "./components/hero-mobile";
 import Navbar from "./components/navbar";
+import Promotions from "./components/promotions";
 import Results from "./components/results";
+import Reviews from "./components/reviews";
 import Services from "./components/services";
+import { LINE_URL, externalLink } from "./contact";
 
 const trust = [
   {
@@ -72,10 +77,11 @@ export default function Home() {
                 </p>
                 <div className="mt-9 flex flex-wrap gap-4">
                   <Link
-                    href="#booking"
+                    href={LINE_URL}
+                    {...externalLink}
                     className="rounded-lg bg-brand px-8 py-4 text-sm font-medium text-on-brand shadow-lg shadow-navy/20 transition-all duration-200 hover:opacity-90 hover:shadow-xl hover:shadow-navy/25 active:scale-[0.98]"
                   >
-                    จองคิวปรึกษา
+                    จองคิวผ่านไลน์
                   </Link>
                   <Link
                     href="#promotion"
@@ -116,7 +122,12 @@ export default function Home() {
         <Services />
         <Results />
         <Doctor />
+        <Reviews />
+        <Promotions />
       </main>
+
+      <Footer />
+      <ContactFab />
     </>
   );
 }

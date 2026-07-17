@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import { LINE_URL, externalLink } from "../contact";
 
 // ponytail: prices are the "เริ่มต้น" of each category from the client brief.
 // Full per-brand tables live on the (not yet built) detail pages.
@@ -76,7 +77,8 @@ export default function Services() {
             Our Services
           </h2>
           <Link
-            href="#booking"
+            href={LINE_URL}
+            {...externalLink}
             className="inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors duration-200 hover:text-accent"
           >
             ดูบริการทั้งหมด
@@ -89,7 +91,8 @@ export default function Services() {
             ({ image, title, subtitle, detail, brands, from, unit }) => (
               <li key={title}>
                 <Link
-                  href="#booking"
+                  href={LINE_URL}
+                  {...externalLink}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/5"
                 >
                   <div className="relative aspect-4/3 overflow-hidden bg-surface-2">
@@ -175,7 +178,8 @@ export default function Services() {
                 <p className="text-xs text-white/60">ต่อครั้ง (2.5 mg.)</p>
               </div>
               <Link
-                href="#booking"
+                href={LINE_URL}
+                {...externalLink}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-medium text-navy transition-all duration-200 hover:bg-gold active:scale-[0.98]"
               >
                 ปรึกษาแพทย์

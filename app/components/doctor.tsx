@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiAward, FiCheck } from "react-icons/fi";
+import { LINE_URL, externalLink } from "../contact";
 
 // ponytail: straight from the client brief — license and ว. number are the trust anchor, not decoration.
 const credentials = [
@@ -13,9 +15,17 @@ export default function Doctor() {
   return (
     <section id="about" className="scroll-mt-20 bg-surface-2">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-2 lg:gap-16">
-        {/* ponytail: 4:5 portrait plate — one photo, swap for <Image fill /> when it lands */}
         <div className="relative mx-auto w-full max-w-md lg:mx-0">
-          <div className="aspect-4/5 overflow-hidden rounded-3xl border border-line bg-surface-3" />
+          {/* ponytail: source is 2:3, plate is 4:5 — object-top keeps his face and crops the stool */}
+          <div className="relative aspect-4/5 overflow-hidden rounded-3xl border border-line bg-surface-3">
+            <Image
+              src="/doctor.jpg"
+              alt="นายแพทย์พงศ์พันธ์ ศิรินภาพันธ์ แพทย์ผู้ดูแล Dr. KIM Clinic"
+              fill
+              sizes="(min-width: 1024px) 28rem, 100vw"
+              className="object-cover object-top"
+            />
+          </div>
 
           {/* license card overlaps the photo — the number is the most load-bearing fact here */}
           <div className="absolute -bottom-6 left-1/2 w-[85%] -translate-x-1/2 rounded-2xl border border-line bg-surface p-4 shadow-xl shadow-navy/10 sm:left-auto sm:right-6 sm:w-auto sm:translate-x-0">
@@ -72,7 +82,8 @@ export default function Doctor() {
           </ul>
 
           <Link
-            href="#booking"
+            href={LINE_URL}
+            {...externalLink}
             className="mt-9 inline-flex items-center gap-2 rounded-lg bg-brand px-8 py-4 text-sm font-medium text-on-brand shadow-lg shadow-navy/20 transition-all duration-200 hover:opacity-90 hover:shadow-xl active:scale-[0.98]"
           >
             ปรึกษาแพทย์

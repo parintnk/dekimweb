@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { HiOutlineMenu } from "react-icons/hi";
+import MobileMenu from "./mobile-menu";
 import ThemeToggle from "./theme-toggle";
+import { LINE_URL, externalLink } from "../contact";
 
 const links = [
   { label: "หน้าแรก", href: "#", current: true },
@@ -66,42 +67,14 @@ export default function Navbar() {
           <ThemeToggle />
 
           <Link
-            href="#booking"
+            href={LINE_URL}
+            {...externalLink}
             className="hidden rounded-full bg-brand px-6 py-3 text-sm font-medium text-on-brand shadow-sm transition-all duration-200 hover:opacity-90 hover:shadow-md active:scale-[0.98] sm:block"
           >
-            จองคิวออนไลน์
+            จองคิวผ่านไลน์
           </Link>
 
-          {/* ponytail: native <details> mobile menu — no client JS, no state. Swap for a client component if it needs animation. */}
-          <details className="relative lg:hidden">
-            <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full text-ink transition-colors duration-200 hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
-              <HiOutlineMenu size={24} aria-hidden />
-              <span className="sr-only">เปิดเมนู</span>
-            </summary>
-            <ul className="absolute right-0 mt-3 w-56 rounded-2xl border border-line bg-surface py-2 shadow-xl">
-              {links.map((l) => (
-                <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    aria-current={l.current ? "page" : undefined}
-                    className={`block px-5 py-3 text-sm transition-colors duration-200 hover:bg-surface-2 hover:text-ink ${
-                      l.current ? "font-medium text-ink" : "text-ink-body"
-                    }`}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-              <li className="px-5 pb-1 pt-2 sm:hidden">
-                <Link
-                  href="#booking"
-                  className="block rounded-full bg-brand px-4 py-3 text-center text-sm font-medium text-on-brand"
-                >
-                  จองคิวออนไลน์
-                </Link>
-              </li>
-            </ul>
-          </details>
+          <MobileMenu links={links} />
         </div>
       </nav>
     </header>

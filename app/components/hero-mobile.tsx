@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import { LINE_URL, externalLink } from "../contact";
 
 // ponytail: mobile-only hero. Shares nothing with the desktop hero on purpose —
 // different crop, different composition. Edit one without touching the other.
@@ -51,10 +52,11 @@ export default function HeroMobile() {
       {/* ponytail: the max() padding clears the iOS home indicator — flat padding sits under it */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/90 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden">
         <Link
-          href="#booking"
+          href={LINE_URL}
+          {...externalLink}
           className="flex h-13 items-center justify-center rounded-full bg-brand text-sm font-medium text-on-brand shadow-lg shadow-navy/25 transition-transform duration-200 active:scale-[0.98]"
         >
-          จองคิวปรึกษา
+          จองคิวผ่านไลน์
         </Link>
       </div>
     </>

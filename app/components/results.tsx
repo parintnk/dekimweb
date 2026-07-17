@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import { LINE_URL, externalLink } from "../contact";
 
 // ponytail: photos only — no captions. Swap the plate for <Image fill /> per item when they arrive.
 const results = Array.from({ length: 8 }, (_, i) => ({ id: i + 1 }));
@@ -29,7 +30,8 @@ export default function Results() {
             Real Patient Results
           </h2>
           <Link
-            href="#booking"
+            href={LINE_URL}
+            {...externalLink}
             className="inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors duration-200 hover:text-accent"
           >
             ปรึกษาแพทย์เพื่อดูเคสของคุณ
