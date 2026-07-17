@@ -1,22 +1,25 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { LINE_URL, externalLink } from "../contact";
 import MobileMenu from "./mobile-menu";
 import ThemeToggle from "./theme-toggle";
-import { LINE_URL, externalLink } from "../contact";
 
 const links = [
-  { label: "หน้าแรก", href: "#", current: true },
-  { label: "เกี่ยวกับเรา", href: "#about" },
-  { label: "บริการของเรา", href: "#services" },
-  { label: "โปรโมชั่น", href: "#promotion" },
-  { label: "รีวิว", href: "#reviews" },
-  { label: "บทความ", href: "#blog" },
-  { label: "ติดต่อเรา", href: "#contact" },
+  { label: "หน้าแรก", href: "/" },
+  { label: "เกี่ยวกับเรา", href: "/about" },
+  { label: "บริการของเรา", href: "/services" },
+  { label: "โปรโมชั่น", href: "/promotions" },
+  { label: "รีวิว", href: "/reviews" },
+  { label: "บทความ", href: "/blog" },
+  { label: "ติดต่อเรา", href: "/contact" },
 ];
 
 function Logo() {
   return (
     <Link
-      href="#"
+      href="/"
       className="block leading-none"
       aria-label="Dr. KIM Clinic หน้าแรก"
     >
@@ -33,6 +36,10 @@ function Logo() {
 }
 
 export default function Navbar() {
+  // ponytail: client component only for this line — the active state follows the route
+  const pathname = usePathname();
+  const nav = links.map((l) => ({ ...l, current: l.href === pathname }));
+
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur-md">
       <a
@@ -46,7 +53,7 @@ export default function Navbar() {
         <Logo />
 
         <ul className="hidden items-center gap-1 lg:flex">
-          {links.map((l) => (
+          {nav.map((l) => (
             <li key={l.label}>
               <Link
                 href={l.href}
@@ -74,7 +81,7 @@ export default function Navbar() {
             จองคิวผ่านไลน์
           </Link>
 
-          <MobileMenu links={links} />
+          <MobileMenu links={nav} />
         </div>
       </nav>
     </header>

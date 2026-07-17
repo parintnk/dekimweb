@@ -21,22 +21,24 @@ const socials = [
 ];
 
 const menu = [
-  { label: "หน้าแรก", href: "#" },
-  { label: "เกี่ยวกับเรา", href: "#about" },
-  { label: "บริการของเรา", href: "#services" },
-  { label: "ผลลัพธ์จริง", href: "#results" },
-  { label: "โปรโมชั่น", href: "#promotion" },
-  { label: "ติดต่อเรา", href: "#contact" },
+  { label: "หน้าแรก", href: "/" },
+  { label: "เกี่ยวกับเรา", href: "/about" },
+  { label: "บริการของเรา", href: "/services" },
+  { label: "ผลลัพธ์จริง", href: "/#results" },
+  { label: "โปรโมชั่น", href: "/promotions" },
+  { label: "รีวิว", href: "/reviews" },
+  { label: "บทความ", href: "/blog" },
+  { label: "ติดต่อเรา", href: "/contact" },
 ];
 
 const services = [
-  "Botox",
-  "Filler",
-  "Biostimulator",
-  "Mesotherapy",
-  "IV Drip",
-  "Energy-Based Device",
-  "Mounjaro ลดน้ำหนัก",
+  { label: "Botox", href: "/services#botox" },
+  { label: "Filler", href: "/services#filler" },
+  { label: "Biostimulator", href: "/services#biostimulator" },
+  { label: "Mesotherapy", href: "/services#mesotherapy" },
+  { label: "IV Drip", href: "/services#iv-drip" },
+  { label: "Energy-Based Device", href: "/services#energy-device" },
+  { label: "Mounjaro ลดน้ำหนัก", href: "/services#mounjaro" },
 ];
 
 // ponytail: the footer is always navy — it is the brand block, so it does not follow the theme.
@@ -95,12 +97,12 @@ export default function Footer() {
             <h3 className="font-medium text-white">บริการของเรา</h3>
             <ul className="mt-5 space-y-3">
               {services.map((s) => (
-                <li key={s}>
+                <li key={s.label}>
                   <Link
-                    href="#services"
+                    href={s.href}
                     className="text-sm transition-colors duration-200 hover:text-gold"
                   >
-                    {s}
+                    {s.label}
                   </Link>
                 </li>
               ))}

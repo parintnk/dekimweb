@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Sarabun } from "next/font/google";
 import "./globals.css";
+import ContactFab from "./components/contact-fab";
+import Footer from "./components/footer";
+import MobileCtaBar from "./components/mobile-cta-bar";
+import Navbar from "./components/navbar";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -14,7 +18,10 @@ const sarabun = Sarabun({
 });
 
 export const metadata: Metadata = {
-  title: "Dr. KIM Clinic — เผยผิวสวย มั่นใจในแบบคุณ",
+  title: {
+    default: "Dr. KIM Clinic — เผยผิวสวย มั่นใจในแบบคุณ",
+    template: "%s | Dr. KIM Clinic",
+  },
   description:
     "คลินิกความงามดูแลโดยแพทย์ผู้เชี่ยวชาญ ด้วยเทคโนโลยีที่ทันสมัย ได้ผลลัพธ์ที่เป็นธรรมชาติ",
 };
@@ -39,7 +46,16 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar />
+        {/* ponytail: pb clears the fixed mobile LINE bar */}
+        <main id="main" className="flex-1 pb-20 md:pb-0">
+          {children}
+        </main>
+        <Footer />
+        <ContactFab />
+        <MobileCtaBar />
+      </body>
     </html>
   );
 }

@@ -8,6 +8,7 @@ import { LINE_URL, externalLink } from "../contact";
 const services = [
   {
     image: "/services/botox.jpg",
+    slug: "botox",
     title: "Botox",
     subtitle: "โบท็อกซ์",
     detail: "ลดริ้วรอย ยกกระชับ เรียวหน้า",
@@ -17,6 +18,7 @@ const services = [
   },
   {
     image: "/services/filler.jpg",
+    slug: "filler",
     title: "Filler",
     subtitle: "ฟิลเลอร์",
     detail: "เติมร่องลึก เติมวอลลุ่ม ปรับรูปหน้า",
@@ -26,6 +28,7 @@ const services = [
   },
   {
     image: "/services/biostimulator.jpg",
+    slug: "biostimulator",
     title: "Biostimulator",
     subtitle: "ไบโอสติมูเลเตอร์",
     detail: "กระตุ้นคอลลาเจน ฟื้นผิวจากภายใน",
@@ -35,6 +38,7 @@ const services = [
   },
   {
     image: "/services/mesotherapy.jpg",
+    slug: "mesotherapy",
     title: "Mesotherapy",
     subtitle: "เมโสหน้าใส",
     detail: "ลดฝ้า ผิวกระจ่างใส ลดความมัน",
@@ -44,6 +48,7 @@ const services = [
   },
   {
     image: "/services/iv-drip.jpg",
+    slug: "iv-drip",
     title: "IV Drip",
     subtitle: "วิตามินทางหลอดเลือด",
     detail: "ฟื้นฟูร่างกาย เพิ่มพลัง ผิวออร่า",
@@ -53,6 +58,7 @@ const services = [
   },
   {
     image: "/services/energy-device.jpg",
+    slug: "energy-device",
     title: "Energy-Based Device",
     subtitle: "เลเซอร์และเครื่องมือ",
     detail: "IPL กำจัดขน · CO2 หลุมสิว · HIFU ยกกระชับ",
@@ -77,8 +83,7 @@ export default function Services() {
             Our Services
           </h2>
           <Link
-            href={LINE_URL}
-            {...externalLink}
+            href="/services"
             className="inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors duration-200 hover:text-accent"
           >
             ดูบริการทั้งหมด
@@ -88,11 +93,10 @@ export default function Services() {
 
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map(
-            ({ image, title, subtitle, detail, brands, from, unit }) => (
+            ({ image, slug, title, subtitle, detail, brands, from, unit }) => (
               <li key={title}>
                 <Link
-                  href={LINE_URL}
-                  {...externalLink}
+                  href={`/services#${slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/5"
                 >
                   <div className="relative aspect-4/3 overflow-hidden bg-surface-2">
