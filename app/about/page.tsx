@@ -12,6 +12,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import Doctor from "../components/doctor";
+import Team from "../components/team";
 import ImagePlaceholder from "../components/image-placeholder";
 import PageHeader from "../components/page-header";
 
@@ -145,6 +146,8 @@ export default function AboutPage() {
       </section>
 
       <Doctor />
+
+      <Team />
 
       <section className="bg-surface">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">

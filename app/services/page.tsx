@@ -153,37 +153,45 @@ export default function ServicesPage() {
 
       <section className="bg-surface">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <div className="grid gap-6 lg:grid-cols-2">
-            {categories.map((c) => (
+          {/* ponytail: zigzag rows — image and details side by side, sides swap per category */}
+          <div className="space-y-16 md:space-y-24">
+            {categories.map((c, i) => (
               <article
                 key={c.id}
                 id={c.id}
-                className="scroll-mt-24 overflow-hidden rounded-2xl border border-line bg-surface"
+                className="grid scroll-mt-24 items-center gap-8 lg:grid-cols-2 lg:gap-16"
               >
-                <div className="relative h-44">
+                <div
+                  className={`relative aspect-4/3 overflow-hidden rounded-3xl border border-line ${
+                    i % 2 === 1 ? "lg:order-2" : ""
+                  }`}
+                >
                   <Image
                     src={c.image}
                     alt=""
                     fill
                     sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover object-top"
+                    className="object-cover"
                   />
                   <div className="pointer-events-none absolute inset-0 hidden bg-navy/25 mix-blend-multiply dark:block" />
-                  <p className="absolute left-4 top-4 rounded-full bg-surface/90 px-3 py-1 text-xs font-medium text-ink backdrop-blur-sm">
-                    {c.subtitle}
-                  </p>
                 </div>
 
-                <div className="p-6">
-                  <h2 className="font-display text-2xl text-ink">{c.title}</h2>
-                  <p className="mt-1 text-sm leading-6 text-ink-body">
+                <div className={i % 2 === 1 ? "lg:order-1" : ""}>
+                  <p className="flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
+                    <span className="h-px w-8 bg-gold" aria-hidden />
+                    {String(i + 1).padStart(2, "0")} · {c.subtitle}
+                  </p>
+                  <h2 className="mt-3 font-display text-3xl tracking-tight text-ink">
+                    {c.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-ink-body">
                     {c.blurb}
                   </p>
-                  <p className="mt-2.5 rounded-lg bg-surface-2 px-3 py-2 text-xs leading-5 text-accent">
+                  <p className="mt-3 inline-block rounded-lg bg-surface-2 px-3 py-2 text-xs leading-5 text-accent">
                     เหมาะสำหรับ: {c.fit}
                   </p>
 
-                  <table className="mt-4 w-full text-sm">
+                  <table className="mt-5 w-full text-sm">
                     <tbody>
                       {c.rows.map((r) => (
                         <tr key={r.name} className="border-t border-line">
@@ -213,7 +221,7 @@ export default function ServicesPage() {
           {/* ponytail: Mounjaro keeps the navy band treatment — the brief flags it as the priority service */}
           <div
             id="mounjaro"
-            className="mt-6 scroll-mt-24 overflow-hidden rounded-2xl bg-navy p-6 md:p-10"
+            className="mt-16 scroll-mt-24 overflow-hidden rounded-2xl bg-navy p-6 md:mt-24 md:p-10"
           >
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div>
