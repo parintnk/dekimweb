@@ -11,7 +11,7 @@ import {
   FiClock,
 } from "react-icons/fi";
 import SectionBackdrop from "../../components/section-backdrop";
-import { LINE_URL, externalLink } from "../../contact";
+import { LINE_URL, SITE_URL, externalLink } from "../../contact";
 import { articles } from "../articles";
 
 export function generateStaticParams() {
@@ -25,9 +25,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = articles.find((a) => a.slug === slug);
-  return article
-    ? { title: article.title, description: article.excerpt }
-    : { title: "บทความ" };
+  if (!article) return { title: "บทความ" };
+  return {
+    title: article.title,
+    description: article.excerpt,
+    openGraph: {
+      type: "article",
+      title: article.title,
+      description: article.excerpt,
+      ...(article.image && { images: [{ url: article.image }] }),
+    },
+  };
 }
 
 export default async function ArticlePage({
@@ -55,8 +63,28 @@ export default async function ArticlePage({
   );
   const others = articles.filter((a) => a.slug !== slug).slice(0, 2);
 
+  // ponytail: no datePublished — the source posts carry no dates and we don't invent them
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    ...(article.image && { image: `${SITE_URL}${article.image}` }),
+    author: {
+      "@type": "Person",
+      name: "นพ.พงศ์พันธ์ ศิรินภาพันธ์",
+      jobTitle: "แพทย์ผู้ดำเนินการ Dr. KIM Clinic",
+    },
+    publisher: { "@type": "Organization", name: "Dr. KIM Clinic" },
+    mainEntityOfPage: `${SITE_URL}/blog/${article.slug}`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* scrubbed to #article-body by gsap-effects — sits just under the sticky navbar */}
       <div
         id="reading-progress"

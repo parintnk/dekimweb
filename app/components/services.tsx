@@ -42,7 +42,7 @@ const services = [
     slug: "mesotherapy",
     title: "Mesotherapy",
     subtitle: "เมโสหน้าใส",
-    detail: "ลดฝ้า ผิวกระจ่างใส ลดความมัน",
+    detail: "ลดฝ้า ผิวกระจ่างใส ลดไขมันเฉพาะจุด",
     brands: ["Fat sisi", "Hayyan", "Snow Bright"],
     from: "2,990",
     unit: "ต่อ 1 ขวด",

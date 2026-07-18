@@ -6,7 +6,7 @@ import SectionBackdrop from "./section-backdrop";
 
 // ponytail: straight from the client brief — license and ว. number are the trust anchor, not decoration.
 const credentials = [
-  "แพทยศาสตรบัณฑิต และแพทย์ผู้มีประสบการณ์ด้านความงามกว่า 10 ปี",
+  "แพทย์ใบประกอบวิชาชีพเวชกรรม ว.49913 · ผู้ดำเนินการสถานพยาบาล",
   "เชี่ยวชาญด้าน Botox · Filler · Biostimulator และการปรับรูปหน้า",
   "ดูแลเคสลดน้ำหนักด้วย Mounjaro โดยประเมินและติดตามผลรายบุคคล",
   "วางแผนการรักษาเฉพาะบุคคล เน้นผลลัพธ์ที่เป็นธรรมชาติ",

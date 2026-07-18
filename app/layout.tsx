@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import GsapEffects from "./components/gsap-effects";
 import MobileCtaBar from "./components/mobile-cta-bar";
 import Navbar from "./components/navbar";
+import { FACEBOOK_URL, INSTAGRAM_URL, SITE_URL, TIKTOK_URL } from "./contact";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -19,12 +20,59 @@ const sarabun = Sarabun({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Dr. KIM Clinic — เผยผิวสวย มั่นใจในแบบคุณ",
-    template: "%s | Dr. KIM Clinic",
+    default: "Dr. KIM Clinic เชียงใหม่ — เผยผิวสวย มั่นใจในแบบคุณ",
+    template: "%s | Dr. KIM Clinic เชียงใหม่",
   },
   description:
-    "คลินิกความงามดูแลโดยแพทย์ผู้เชี่ยวชาญ ด้วยเทคโนโลยีที่ทันสมัย ได้ผลลัพธ์ที่เป็นธรรมชาติ",
+    "คลินิกเวชกรรมความงามในเชียงใหม่ ดูแลโดยแพทย์ทุกเคส — Botox, Filler, Biostimulator, Mounjaro ลดน้ำหนัก, เลเซอร์ เปิดทุกวัน 11.00–20.00 น. จองคิวทางไลน์ @doctorkimcnx",
+  // ponytail: "./" resolves per-route against metadataBase — one line, every page canonical
+  alternates: { canonical: "./" },
+  openGraph: {
+    type: "website",
+    locale: "th_TH",
+    siteName: "Dr. KIM Clinic",
+    title: "Dr. KIM Clinic เชียงใหม่ — เผยผิวสวย มั่นใจในแบบคุณ",
+    description:
+      "คลินิกเวชกรรมความงามในเชียงใหม่ ดูแลโดยแพทย์ทุกเคส เปิดทุกวัน 11.00–20.00 น.",
+    images: [{ url: "/clinic/storefront.jpg", width: 1536, height: 1024 }],
+  },
+  twitter: { card: "summary_large_image" },
+};
+
+// ponytail: only facts already published on the site — no invented ratings or geo.
+const clinicJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  name: "Dr. KIM Clinic — หมอคิมคลินิกเวชกรรม เชียงใหม่",
+  url: SITE_URL,
+  image: `${SITE_URL}/clinic/storefront.jpg`,
+  telephone: "+66-84-609-2027",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "72/1 ถ.รัตนโกสินทร์ ต.วัดเกต",
+    addressLocality: "อ.เมืองเชียงใหม่",
+    addressRegion: "เชียงใหม่",
+    postalCode: "50000",
+    addressCountry: "TH",
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    opens: "11:00",
+    closes: "20:00",
+  },
+  sameAs: [FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL],
+  priceRange: "฿790–฿24,900",
 };
 
 export default function RootLayout({
@@ -57,6 +105,10 @@ export default function RootLayout({
         <ContactFab />
         <MobileCtaBar />
         <GsapEffects />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
+        />
       </body>
     </html>
   );

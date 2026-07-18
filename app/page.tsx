@@ -12,8 +12,8 @@ import { LINE_URL, externalLink } from "./contact";
 const trust = [
   {
     icon: FiUser,
-    title: "แพทย์ผู้เชี่ยวชาญ",
-    detail: "ประสบการณ์มากกว่า 10 ปี",
+    title: "แพทย์ดูแลทุกเคส",
+    detail: "ตรวจและทำหัตถการโดยแพทย์ (ว.49913)",
   },
   {
     icon: FiShield,
@@ -27,8 +27,8 @@ const trust = [
   },
   {
     icon: FiHeart,
-    title: "ดูแลทุกเคสอย่างใส่ใจ",
-    detail: "ผลลัพธ์สวยอย่างเป็นธรรมชาติ",
+    title: "ติดตามผลต่อเนื่อง",
+    detail: "นัดติดตามอาการหลังทำทุกเคส",
   },
 ];
 

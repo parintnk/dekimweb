@@ -1,5 +1,11 @@
 // ponytail: single source for every contact target. The clinic takes bookings on LINE, so LINE_URL
 // is what every CTA points at — change it here, not in eight components.
+
+// Canonical origin for sitemap/robots/OG URLs. Set NEXT_PUBLIC_SITE_URL when the real
+// domain goes live — the fallback only exists so local builds produce valid absolute URLs.
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const LINE_URL = "https://line.me/R/ti/p/@doctorkimcnx";
 export const LINE_ID = "@doctorkimcnx";
 

@@ -18,12 +18,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const service = serviceDetails.find((s) => s.slug === slug);
-  return service
-    ? {
-        title: `${service.title} (${service.subtitle})`,
-        description: service.excerpt,
-      }
-    : { title: "บริการ" };
+  if (!service) return { title: "บริการ" };
+  return {
+    title: `${service.title} (${service.subtitle}) เชียงใหม่`,
+    description: service.excerpt,
+    openGraph: {
+      title: `${service.title} (${service.subtitle}) — Dr. KIM Clinic เชียงใหม่`,
+      description: service.excerpt,
+      ...(service.image && { images: [{ url: service.image }] }),
+    },
+  };
 }
 
 export default async function ServiceDetailPage({
