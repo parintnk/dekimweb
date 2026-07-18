@@ -3,6 +3,7 @@ import { Playfair_Display, Sarabun } from "next/font/google";
 import "./globals.css";
 import ContactFab from "./components/contact-fab";
 import Footer from "./components/footer";
+import GoogleTranslate from "./components/google-translate";
 import GsapEffects from "./components/gsap-effects";
 import HideOnAdmin from "./components/hide-on-admin";
 import MobileCtaBar from "./components/mobile-cta-bar";
@@ -108,6 +109,7 @@ export default function RootLayout({
           <Footer />
           <ContactFab />
           <MobileCtaBar />
+          <GoogleTranslate />
         </HideOnAdmin>
         <GsapEffects />
         <script

@@ -67,7 +67,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="font-display text-2xl tracking-wide text-white">
+            <p className="notranslate font-display text-2xl tracking-wide text-white">
               Dr. <span className="font-bold">KIM</span>
             </p>
             <p className="mt-1 flex items-center gap-2 text-[0.6rem] tracking-[0.35em] text-gold">

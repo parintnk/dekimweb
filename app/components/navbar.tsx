@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LINE_URL, externalLink } from "../contact";
+import LanguageSwitcher from "./language-switcher";
 import MobileMenu from "./mobile-menu";
 import ThemeToggle from "./theme-toggle";
 
@@ -23,7 +24,7 @@ function Logo() {
       className="block leading-none"
       aria-label="Dr. KIM Clinic หน้าแรก"
     >
-      <span className="font-display text-2xl tracking-wide text-ink">
+      <span className="notranslate font-display text-2xl tracking-wide text-ink">
         Dr. <span className="font-bold">KIM</span>
       </span>
       <span className="mt-1 flex items-center gap-2 text-[0.6rem] tracking-[0.35em] text-accent">
@@ -71,6 +72,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-1">
+          <LanguageSwitcher />
           <ThemeToggle />
 
           <Link
