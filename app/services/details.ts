@@ -11,6 +11,7 @@ export type ServiceDetail = {
   image?: string;
   excerpt: string;
   blocks: Block[];
+  html?: string; // editor-authored HTML body — wins over blocks when present
   related?: { label: string; href: string };
 };
 

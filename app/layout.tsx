@@ -4,6 +4,7 @@ import "./globals.css";
 import ContactFab from "./components/contact-fab";
 import Footer from "./components/footer";
 import GsapEffects from "./components/gsap-effects";
+import HideOnAdmin from "./components/hide-on-admin";
 import MobileCtaBar from "./components/mobile-cta-bar";
 import Navbar from "./components/navbar";
 import { FACEBOOK_URL, INSTAGRAM_URL, SITE_URL, TIKTOK_URL } from "./contact";
@@ -96,14 +97,18 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <Navbar />
+        <HideOnAdmin>
+          <Navbar />
+        </HideOnAdmin>
         {/* ponytail: pb clears the fixed mobile LINE bar */}
         <main id="main" className="flex-1 pb-20 md:pb-0">
           {children}
         </main>
-        <Footer />
-        <ContactFab />
-        <MobileCtaBar />
+        <HideOnAdmin>
+          <Footer />
+          <ContactFab />
+          <MobileCtaBar />
+        </HideOnAdmin>
         <GsapEffects />
         <script
           type="application/ld+json"

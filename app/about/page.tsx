@@ -15,6 +15,9 @@ import {
 import Doctor from "../components/doctor";
 import Team from "../components/team";
 import PageHeader from "../components/page-header";
+import { getGallery } from "../lib/content";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "เกี่ยวกับเรา",
@@ -86,60 +89,8 @@ const steps = [
   },
 ];
 
-// ponytail: real photos from the clinic (received 2026-07-18). Mixed orientations,
-// so the gallery lays out with CSS columns instead of a grid — no row-span math.
-const gallery = [
-  {
-    src: "/clinic/storefront.jpg",
-    w: 1536,
-    h: 1024,
-    alt: "หน้าร้าน Dr. KIM Clinic",
-  },
-  {
-    src: "/clinic/lobby.jpg",
-    w: 1570,
-    h: 1001,
-    alt: "โถงต้อนรับพร้อมเปียโนและโซฟากำมะหยี่น้ำเงิน",
-  },
-  {
-    src: "/clinic/lounge.jpg",
-    w: 1024,
-    h: 1536,
-    alt: "มุมนั่งรอโทนน้ำเงิน-ทอง",
-  },
-  {
-    src: "/clinic/gallery-hall.jpg",
-    w: 1537,
-    h: 1023,
-    alt: "ทางเดินภายในคลินิกและใบประกาศนียบัตร",
-  },
-  {
-    src: "/clinic/treatment-room.jpg",
-    w: 1564,
-    h: 1006,
-    alt: "ห้องทรีตเมนต์พร้อมเตียงของคลินิก",
-  },
-  {
-    src: "/clinic/doctor-treatment.jpg",
-    w: 1536,
-    h: 1024,
-    alt: "แพทย์ขณะทำหัตถการด้วยเครื่องยกกระชับ",
-  },
-  {
-    src: "/clinic/devices.jpg",
-    w: 1536,
-    h: 1024,
-    alt: "เครื่องเลเซอร์และเครื่องยกกระชับของคลินิก",
-  },
-  {
-    src: "/clinic/consult-room.jpg",
-    w: 1536,
-    h: 1024,
-    alt: "ห้องตรวจและให้คำปรึกษา",
-  },
-];
-
-export default function AboutPage() {
+export default async function AboutPage() {
+  const gallery = await getGallery();
   return (
     <>
       <PageHeader

@@ -13,6 +13,9 @@ import {
 import SectionBackdrop from "../../components/section-backdrop";
 import { LINE_URL, SITE_URL, externalLink } from "../../contact";
 import { articles } from "../articles";
+import { getArticles } from "../../lib/content";
+
+export const revalidate = 60;
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -24,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = articles.find((a) => a.slug === slug);
+  const article = (await getArticles()).find((a) => a.slug === slug);
   if (!article) return { title: "บทความ" };
   return {
     title: article.title,
@@ -44,24 +47,45 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = articles.find((a) => a.slug === slug);
+  const all = await getArticles();
+  const article = all.find((a) => a.slug === slug);
   if (!article) notFound();
 
-  // ponytail: Thai has no spaces to count words — chars/700 is a fair minutes estimate
-  const chars = article.blocks.reduce(
-    (n, b) =>
-      n +
-      (b.h?.length ?? 0) +
-      (b.p?.length ?? 0) +
-      (b.list?.join("").length ?? 0),
-    0,
-  );
-  const minutes = Math.max(1, Math.round(chars / 700));
+  const strip = (t: string) => t.replace(/<[^>]*>/g, "");
 
-  const toc = article.blocks.flatMap((b, i) =>
-    b.h ? [{ id: `heading-${i}`, label: b.h }] : [],
-  );
-  const others = articles.filter((a) => a.slug !== slug).slice(0, 2);
+  // editor-authored HTML wins; legacy block content still renders below
+  let bodyHtml: string | null = null;
+  let toc: { id: string; label: string }[] = [];
+  let chars = 0;
+  if (article.html?.trim()) {
+    let n = 0;
+    const items: { id: string; label: string }[] = [];
+    bodyHtml = article.html.replace(
+      /<h2([^>]*)>([\s\S]*?)<\/h2>/g,
+      (_m, attrs: string, inner: string) => {
+        const anchor = `heading-${n++}`;
+        items.push({ id: anchor, label: strip(inner).trim() });
+        return `<h2 id="${anchor}"${attrs}>${inner}</h2>`;
+      },
+    );
+    toc = items;
+    chars = strip(article.html).length;
+  } else {
+    chars = article.blocks.reduce(
+      (n, b) =>
+        n +
+        (b.h?.length ?? 0) +
+        (b.p?.length ?? 0) +
+        (b.list?.join("").length ?? 0),
+      0,
+    );
+    toc = article.blocks.flatMap((b, i) =>
+      b.h ? [{ id: `heading-${i}`, label: strip(b.h) }] : [],
+    );
+  }
+  // ponytail: Thai has no spaces to count words — chars/700 is a fair minutes estimate
+  const minutes = Math.max(1, Math.round(chars / 700));
+  const others = all.filter((a) => a.slug !== slug).slice(0, 2);
 
   // ponytail: no datePublished — the source posts carry no dates and we don't invent them
   const articleJsonLd = {
@@ -174,51 +198,77 @@ export default async function ArticlePage({
               </details>
             )}
 
-            {article.blocks.map((b, i) => (
-              <div key={i}>
-                {b.h && (
-                  <h2
-                    id={`heading-${i}`}
-                    className="mt-12 scroll-mt-28 border-l-2 border-gold pl-4 font-display text-2xl text-ink first:mt-0"
-                  >
-                    {b.h}
-                  </h2>
-                )}
-                {b.p && (
-                  <p
-                    className={
-                      i === 0
-                        ? "mt-4 text-lg leading-9 text-ink-body"
-                        : "mt-4 leading-8 text-ink-body"
-                    }
-                  >
-                    {b.p}
-                  </p>
-                )}
-                {b.img && (
-                  <Image
-                    src={b.img.src}
-                    alt={b.img.alt}
-                    width={b.img.w}
-                    height={b.img.h}
-                    sizes="(min-width: 1024px) 42rem, 100vw"
-                    className="mt-6 w-full rounded-2xl border border-line"
-                  />
-                )}
-                {b.list && (
-                  <ul className="mt-4 space-y-3">
-                    {b.list.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-accent">
-                          <FiCheck size={12} aria-hidden />
-                        </span>
-                        <span className="leading-7 text-ink-body">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
+            {bodyHtml && (
+              <div
+                className="article-html"
+                dangerouslySetInnerHTML={{ __html: bodyHtml }}
+              />
+            )}
+
+            {!bodyHtml &&
+              article.blocks.map((b, i) => (
+                <div key={i}>
+                  {b.h && (
+                    <h2
+                      id={`heading-${i}`}
+                      className="rich mt-12 scroll-mt-28 border-l-2 border-gold pl-4 font-display text-2xl text-ink first:mt-0"
+                      dangerouslySetInnerHTML={{ __html: b.h }}
+                    />
+                  )}
+                  {b.h3 && (
+                    <h3
+                      className="rich mt-8 font-display text-xl text-ink"
+                      dangerouslySetInnerHTML={{ __html: b.h3 }}
+                    />
+                  )}
+                  {b.p && (
+                    <p
+                      className={`rich ${
+                        i === 0
+                          ? "mt-4 text-lg leading-9 text-ink-body"
+                          : "mt-4 leading-8 text-ink-body"
+                      }`}
+                      dangerouslySetInnerHTML={{ __html: b.p }}
+                    />
+                  )}
+                  {b.img && (
+                    <Image
+                      src={b.img.src}
+                      alt={b.img.alt}
+                      width={b.img.w}
+                      height={b.img.h}
+                      sizes="(min-width: 1024px) 42rem, 100vw"
+                      className="mt-6 w-full rounded-2xl border border-line"
+                    />
+                  )}
+                  {b.list && (
+                    <ul className="mt-4 space-y-3">
+                      {b.list.map((item) => (
+                        <li key={item} className="flex items-start gap-3">
+                          <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-accent">
+                            <FiCheck size={12} aria-hidden />
+                          </span>
+                          <span
+                            className="rich leading-7 text-ink-body"
+                            dangerouslySetInnerHTML={{ __html: item }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {b.ol && (
+                    <ol className="mt-4 list-decimal space-y-2 pl-6 marker:font-medium marker:text-accent">
+                      {b.ol.map((item) => (
+                        <li
+                          key={item}
+                          className="rich pl-1 leading-7 text-ink-body"
+                          dangerouslySetInnerHTML={{ __html: item }}
+                        />
+                      ))}
+                    </ol>
+                  )}
+                </div>
+              ))}
 
             <div className="mt-12 rounded-2xl bg-navy p-8 text-center">
               <h2 className="font-display text-2xl text-white">

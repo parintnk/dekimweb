@@ -5,44 +5,15 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { FaLine } from "react-icons/fa";
 import { FiMaximize2, FiX } from "react-icons/fi";
+import type { Promotion } from "../lib/static-content";
 import { LINE_URL, externalLink } from "../contact";
 import SectionBackdrop from "./section-backdrop";
 
-// ponytail: the posters are the content — every price and condition is baked into the artwork.
-const promotions = [
-  {
-    src: "/promotions/july.jpg",
-    width: 1040,
-    height: 1300,
-    alt: "โปรโมชั่นประจำเดือนกรกฎาคม รวมราคาพิเศษ Botox Aestox 50 Unit 2,977 บาท, Botox Nabota 100 Unit 5,977 บาท, Neuramis Deep 1 CC 3,977 บาท, เลเซอร์กำจัดขน 877 บาท และรายการอื่น ๆ",
-  },
-  {
-    src: "/promotions/neuramis.jpg",
-    width: 1040,
-    height: 1300,
-    alt: "โปรโมชั่นฟิลเลอร์ Neuramis Black 2 ซีซี ราคา 5,990 บาท คมชัดขึ้นอย่างเป็นธรรมชาติ",
-  },
-  {
-    src: "/promotions/laser-hair.jpg",
-    width: 1040,
-    height: 1040,
-    alt: "โปรโมชั่นเลเซอร์กำจัดขน ราคา 690 บาท ผิวเรียบเนียน วงแขนดูสะอาด",
-  },
-  {
-    src: "/promotions/liftera2.jpg",
-    width: 1040,
-    height: 1040,
-    alt: "โปรโมชั่น LIFTERA 2 ยกกระชับปรับกรอบหน้า 1000 แถม 1000 SHOTS ราคา 4,990 บาท",
-  },
-];
-
-export default function Promotions() {
+export default function Promotions({ items }: { items: Promotion[] }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [active, setActive] = useState<(typeof promotions)[number] | null>(
-    null,
-  );
+  const [active, setActive] = useState<Promotion | null>(null);
 
-  function open(promo: (typeof promotions)[number]) {
+  function open(promo: Promotion) {
     setActive(promo);
     dialogRef.current?.showModal();
   }
@@ -79,7 +50,7 @@ export default function Promotions() {
         </p>
 
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {promotions.map((p) => (
+          {items.map((p) => (
             <li key={p.src} className="reveal">
               <button
                 type="button"

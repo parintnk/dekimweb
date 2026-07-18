@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 import { FiCalendar, FiMessageCircle, FiSearch } from "react-icons/fi";
 import Promotions from "../components/promotions";
+import { getPromotions } from "../lib/content";
 import {
   FACEBOOK_URL,
   INSTAGRAM_URL,
@@ -41,10 +42,13 @@ const socials = [
   { icon: FaTiktok, label: "TikTok", href: TIKTOK_URL },
 ];
 
-export default function PromotionsPage() {
+export const revalidate = 60;
+
+export default async function PromotionsPage() {
+  const promos = await getPromotions();
   return (
     <>
-      <Promotions />
+      <Promotions items={promos} />
 
       <section className="border-t border-line bg-surface">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">

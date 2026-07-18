@@ -1,9 +1,16 @@
 import type { MetadataRoute } from "next";
-import { articles } from "./blog/articles";
 import { SITE_URL } from "./contact";
-import { serviceDetails } from "./services/details";
+import { getArticles, getServiceDetails } from "./lib/content";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// content lives in Supabase now — pull live slugs so admin-created pages get indexed
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [serviceDetails, articles] = await Promise.all([
+    getServiceDetails(),
+    getArticles(),
+  ]);
+
   const pages: MetadataRoute.Sitemap = [
     { path: "", priority: 1 },
     { path: "/services", priority: 0.9 },

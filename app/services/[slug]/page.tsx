@@ -6,6 +6,9 @@ import { FaLine } from "react-icons/fa";
 import { FiArrowLeft, FiArrowRight, FiCheck, FiTag } from "react-icons/fi";
 import { LINE_URL, externalLink } from "../../contact";
 import { serviceDetails } from "../details";
+import { getServiceDetails } from "../../lib/content";
+
+export const revalidate = 60;
 
 export function generateStaticParams() {
   return serviceDetails.map((s) => ({ slug: s.slug }));
@@ -17,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = serviceDetails.find((s) => s.slug === slug);
+  const service = (await getServiceDetails()).find((s) => s.slug === slug);
   if (!service) return { title: "บริการ" };
   return {
     title: `${service.title} (${service.subtitle}) เชียงใหม่`,
@@ -36,7 +39,7 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = serviceDetails.find((s) => s.slug === slug);
+  const service = (await getServiceDetails()).find((s) => s.slug === slug);
   if (!service) notFound();
 
   // ponytail: the standing rate card stays on /services — this page is the knowledge layer,
@@ -84,28 +87,72 @@ export default async function ServiceDetailPage({
             </div>
           )}
 
-          {service.blocks.map((b, i) => (
-            <div key={i}>
-              {b.h && (
-                <h2 className="mt-10 font-display text-2xl text-ink first:mt-0">
-                  {b.h}
-                </h2>
-              )}
-              {b.p && <p className="mt-4 leading-8 text-ink-body">{b.p}</p>}
-              {b.list && (
-                <ul className="mt-4 space-y-3">
-                  {b.list.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-accent">
-                        <FiCheck size={12} aria-hidden />
-                      </span>
-                      <span className="leading-7 text-ink-body">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
+          {service.html?.trim() && (
+            <div
+              className="article-html"
+              dangerouslySetInnerHTML={{ __html: service.html }}
+            />
+          )}
+
+          {!service.html?.trim() &&
+            service.blocks.map((b, i) => (
+              <div key={i}>
+                {b.h && (
+                  <h2
+                    className="rich mt-10 font-display text-2xl text-ink first:mt-0"
+                    dangerouslySetInnerHTML={{ __html: b.h }}
+                  />
+                )}
+                {b.h3 && (
+                  <h3
+                    className="rich mt-8 font-display text-xl text-ink"
+                    dangerouslySetInnerHTML={{ __html: b.h3 }}
+                  />
+                )}
+                {b.p && (
+                  <p
+                    className="rich mt-4 leading-8 text-ink-body"
+                    dangerouslySetInnerHTML={{ __html: b.p }}
+                  />
+                )}
+                {b.img && (
+                  <Image
+                    src={b.img.src}
+                    alt={b.img.alt}
+                    width={b.img.w}
+                    height={b.img.h}
+                    sizes="(min-width: 768px) 48rem, 100vw"
+                    className="mt-6 w-full rounded-2xl border border-line"
+                  />
+                )}
+                {b.list && (
+                  <ul className="mt-4 space-y-3">
+                    {b.list.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-accent">
+                          <FiCheck size={12} aria-hidden />
+                        </span>
+                        <span
+                          className="rich leading-7 text-ink-body"
+                          dangerouslySetInnerHTML={{ __html: item }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {b.ol && (
+                  <ol className="mt-4 list-decimal space-y-2 pl-6 marker:font-medium marker:text-accent">
+                    {b.ol.map((item) => (
+                      <li
+                        key={item}
+                        className="rich pl-1 leading-7 text-ink-body"
+                        dangerouslySetInnerHTML={{ __html: item }}
+                      />
+                    ))}
+                  </ol>
+                )}
+              </div>
+            ))}
 
           {service.related && (
             <Link

@@ -1,9 +1,12 @@
 // ponytail: transcribed from the clinic's own Google Site blog (sites.google.com/view/dr-kim-clinic-cnx,
 // fetched 2026-07-17; images pulled 2026-07-18) — their copy, lightly reflowed. New articles get added here.
+// h/h3/p/list/ol strings may carry inline HTML (strong/em/u/s/a) written by the admin editor
 export type Block = {
   h?: string;
+  h3?: string;
   p?: string;
   list?: string[];
+  ol?: string[];
   img?: { src: string; alt: string; w: number; h: number };
 };
 
@@ -16,6 +19,7 @@ export type Article = {
   imagePos?: string; // object-position class when the cover crop needs steering
   imageNote?: string; // what shot to ask the clinic for, when there is no image yet
   blocks: Block[];
+  html?: string; // editor-authored HTML body — wins over blocks when present
 };
 
 export const articles: Article[] = [

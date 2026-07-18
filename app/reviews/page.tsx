@@ -28,6 +28,8 @@ const trustPoints = [
   "ข้อมูลอัปเดตล่าสุด กรกฎาคม 2026 — อ่านรีวิวสดได้ที่ Google",
 ];
 
+export const revalidate = 60;
+
 export default function ReviewsPage() {
   return (
     <>

@@ -1,75 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import { getServiceCards } from "../lib/content";
 import { LINE_URL, externalLink } from "../contact";
 import SectionBackdrop from "./section-backdrop";
 
-// ponytail: prices are the "เริ่มต้น" of each category from the client brief.
-// Full per-brand tables live on the (not yet built) detail pages.
-const services = [
-  {
-    image: "/services/botox.jpg",
-    slug: "botox",
-    title: "Botox",
-    subtitle: "โบท็อกซ์",
-    detail: "ลดริ้วรอย ยกกระชับ เรียวหน้า",
-    brands: ["Aestox", "Nabota", "Allergan"],
-    from: "3,590",
-    unit: "ต่อ 50 unit",
-  },
-  {
-    image: "/services/filler.jpg",
-    slug: "filler",
-    title: "Filler",
-    subtitle: "ฟิลเลอร์",
-    detail: "เติมร่องลึก เติมวอลลุ่ม ปรับรูปหน้า",
-    brands: ["Neuramis", "Elavie", "Restylane"],
-    from: "3,990",
-    unit: "ต่อ 1 CC",
-  },
-  {
-    image: "/services/biostimulator.jpg",
-    slug: "biostimulator",
-    title: "Biostimulator",
-    subtitle: "ไบโอสติมูเลเตอร์",
-    detail: "กระตุ้นคอลลาเจน ฟื้นผิวจากภายใน",
-    brands: ["Sculptra", "Aesthefill", "Olidia"],
-    from: "16,900",
-    unit: "ต่อ 1 ขวด",
-  },
-  {
-    image: "/services/mesotherapy.jpg",
-    slug: "mesotherapy",
-    title: "Mesotherapy",
-    subtitle: "เมโสหน้าใส",
-    detail: "ลดฝ้า ผิวกระจ่างใส ลดไขมันเฉพาะจุด",
-    brands: ["Fat sisi", "Hayyan", "Snow Bright"],
-    from: "2,990",
-    unit: "ต่อ 1 ขวด",
-  },
-  {
-    image: "/services/iv-drip.jpg",
-    slug: "iv-drip",
-    title: "IV Drip",
-    subtitle: "วิตามินทางหลอดเลือด",
-    detail: "ฟื้นฟูร่างกาย เพิ่มพลัง ผิวออร่า",
-    brands: ["Healthy", "Energy", "Aura Bright"],
-    from: "790",
-    unit: "ต่อ 1 กระปุก",
-  },
-  {
-    image: "/services/energy-device.jpg",
-    slug: "energy-device",
-    title: "Energy-Based Device",
-    subtitle: "เลเซอร์และเครื่องมือ",
-    detail: "IPL กำจัดขน · CO2 หลุมสิว · HIFU ยกกระชับ",
-    brands: ["Liftera 2", "Coolfase", "CO2 Laser"],
-    from: "790",
-    unit: "ต่อครั้ง",
-  },
-];
-
-export default function Services() {
+export default async function Services() {
+  const services = await getServiceCards();
   // ponytail: scroll-mt keeps the heading clear of the sticky navbar on #services jumps
   return (
     <section

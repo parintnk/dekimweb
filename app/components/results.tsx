@@ -1,20 +1,37 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import { LINE_URL, externalLink } from "../contact";
+import { getResults } from "../lib/content";
 import SectionBackdrop from "./section-backdrop";
 
-// ponytail: photos only — no captions. Swap the plate for <Image fill /> per item when they arrive.
-const results = Array.from({ length: 8 }, (_, i) => ({ id: i + 1 }));
+type Shot = { src: string; alt: string } | null;
 
-function ResultCard({ duplicate }: { duplicate?: boolean }) {
+function ResultCard({ shot, duplicate }: { shot: Shot; duplicate?: boolean }) {
   return (
     <li className="w-64 shrink-0 md:w-72" aria-hidden={duplicate}>
-      <div className="aspect-square overflow-hidden rounded-2xl border border-line bg-surface-3" />
+      <div className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface-3">
+        {shot && (
+          <Image
+            src={shot.src}
+            alt={duplicate ? "" : shot.alt}
+            fill
+            sizes="18rem"
+            className="object-cover"
+          />
+        )}
+      </div>
     </li>
   );
 }
 
-export default function Results() {
+export default async function Results() {
+  // ponytail: empty table = the original blank plates, so the marquee never disappears
+  const shots = await getResults();
+  const plates: Shot[] = shots.length
+    ? shots
+    : Array.from({ length: 8 }, () => null);
+
   return (
     <section
       id="results"
@@ -50,12 +67,12 @@ export default function Results() {
       {/* ponytail: full-bleed on purpose — the row should run off both edges, not stop at the container */}
       <div className="reveal relative mt-12">
         <ul className="flex w-max animate-marquee gap-5 hover:[animation-play-state:paused]">
-          {results.map((r) => (
-            <ResultCard key={r.id} />
+          {plates.map((shot, i) => (
+            <ResultCard key={i} shot={shot} />
           ))}
           {/* second pass exists only to make the loop seamless, so screen readers skip it */}
-          {results.map((r) => (
-            <ResultCard key={`${r.id}-loop`} duplicate />
+          {plates.map((shot, i) => (
+            <ResultCard key={`${i}-loop`} shot={shot} duplicate />
           ))}
         </ul>
 

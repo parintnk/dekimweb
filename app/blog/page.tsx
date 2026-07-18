@@ -6,16 +6,16 @@ import { FiArrowRight } from "react-icons/fi";
 import ImagePlaceholder from "../components/image-placeholder";
 import PageHeader from "../components/page-header";
 import { LINE_URL, externalLink } from "../contact";
-import { articles } from "./articles";
+import type { articles } from "./articles";
+import { getArticles } from "../lib/content";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "บทความ",
   description:
     "บทความและเกร็ดความรู้ด้านความงามจากทีมแพทย์ Dr. KIM Clinic เชียงใหม่ — Mounjaro, Biostimulator, COOLTERA และอื่น ๆ",
 };
-
-// ponytail: newest-first is just array order in articles.ts — no dates on the source posts.
-const [featured, ...rest] = articles;
 
 function Cover({
   article: a,
@@ -40,7 +40,9 @@ function Cover({
   );
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  // ponytail: newest-first is just sort_order — no dates on the source posts
+  const [featured, ...rest] = await getArticles();
   return (
     <>
       <PageHeader

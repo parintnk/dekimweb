@@ -8,6 +8,10 @@ import Results from "./components/results";
 import Reviews from "./components/reviews";
 import Services from "./components/services";
 import { LINE_URL, externalLink } from "./contact";
+import { getPromotions } from "./lib/content";
+
+// content comes from Supabase (admin-editable) — refresh at most once a minute
+export const revalidate = 60;
 
 const trust = [
   {
@@ -32,7 +36,8 @@ const trust = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const promos = await getPromotions();
   return (
     <>
       <HeroMobile />
@@ -154,7 +159,7 @@ export default function Home() {
       </section>
 
       <Reviews />
-      <Promotions />
+      <Promotions items={promos} />
     </>
   );
 }
