@@ -12,6 +12,7 @@ import {
   type ServiceCard,
   type TeamMember,
 } from "./static-content";
+import { unstable_cache } from "next/cache";
 import { supabase } from "./supabase";
 
 // ponytail: every getter follows the same rule — rows in the table win, an empty table (or a
@@ -35,17 +36,28 @@ type ServiceRow = {
   related_href: string | null;
 };
 
-async function rows<T>(table: string, select = "*"): Promise<T[]> {
-  try {
-    const { data, error } = await supabase
-      .from(table)
-      .select(select)
-      .order("sort_order", { ascending: true });
-    if (error || !data?.length) return [];
-    return data as T[];
-  } catch {
-    return [];
-  }
+// ponytail: one shared 60s cache keyed by table name — dedupes repeat queries within a
+// request (generateMetadata + page) and across requests on the dynamic /blog route, matching
+// the existing `revalidate = 60` on the static pages. Admin edits show up within a minute.
+const cachedRows = unstable_cache(
+  async (table: string): Promise<unknown[]> => {
+    try {
+      const { data, error } = await supabase
+        .from(table)
+        .select("*")
+        .order("sort_order", { ascending: true });
+      if (error || !data?.length) return [];
+      return data;
+    } catch {
+      return [];
+    }
+  },
+  ["content-rows"],
+  { revalidate: 60 },
+);
+
+async function rows<T>(table: string): Promise<T[]> {
+  return (await cachedRows(table)) as T[];
 }
 
 export async function getServiceCards(): Promise<ServiceCard[]> {
