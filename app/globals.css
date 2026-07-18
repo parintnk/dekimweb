@@ -351,7 +351,10 @@ font[style] {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* the clinic wants the results row always moving — exempt it from the freeze
+     (slow constant scroll, gentle enough) */
   .animate-marquee {
-    animation-play-state: paused !important;
+    animation-duration: var(--marquee-duration, 120s) !important;
+    animation-iteration-count: infinite !important;
   }
 }

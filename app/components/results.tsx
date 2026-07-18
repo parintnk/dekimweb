@@ -70,7 +70,12 @@ export default async function Results() {
             matter how many photos the admin adds — ~12s per plate reads comfortably on phones */}
         <ul
           className="flex w-max animate-marquee gap-5 will-change-transform hover:[animation-play-state:paused]"
-          style={{ animationDuration: `${plates.length * 12}s` }}
+          style={
+            {
+              animationDuration: `${plates.length * 12}s`,
+              "--marquee-duration": `${plates.length * 12}s`,
+            } as React.CSSProperties
+          }
         >
           {plates.map((shot, i) => (
             <ResultCard key={i} shot={shot} />
