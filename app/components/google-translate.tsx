@@ -55,6 +55,22 @@ export default function GoogleTranslate() {
       };
     }
 
+    // ponytail: while a translation is active Google owns the DOM, so Next's soft
+    // navigation half-fails (URL changes, old page stays). Capture-phase listener turns
+    // internal link taps into full page loads — Google re-translates on arrival.
+    const forceFullNav = (e: MouseEvent) => {
+      if (!document.cookie.includes("googtrans=/th/")) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest("a");
+      if (!a || a.target || a.hasAttribute("download")) return;
+      if (a.origin !== location.origin) return;
+      if (a.pathname === location.pathname && a.hash) return;
+      e.preventDefault();
+      e.stopPropagation();
+      location.href = a.href;
+    };
+    document.addEventListener("click", forceFullNav, true);
+
     if (!document.getElementById("google_translate_element")) {
       const div = document.createElement("div");
       div.id = "google_translate_element";
@@ -82,6 +98,8 @@ export default function GoogleTranslate() {
       script.async = true;
       document.body.appendChild(script);
     }
+
+    return () => document.removeEventListener("click", forceFullNav, true);
   }, []);
 
   return null;
