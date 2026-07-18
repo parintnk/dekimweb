@@ -66,7 +66,12 @@ export default async function Results() {
 
       {/* ponytail: full-bleed on purpose — the row should run off both edges, not stop at the container */}
       <div className="reveal relative mt-12">
-        <ul className="flex w-max animate-marquee gap-5 hover:[animation-play-state:paused]">
+        {/* ponytail: duration scales with plate count so px/s speed stays constant no
+            matter how many photos the admin adds — ~12s per plate reads comfortably on phones */}
+        <ul
+          className="flex w-max animate-marquee gap-5 will-change-transform hover:[animation-play-state:paused]"
+          style={{ animationDuration: `${plates.length * 12}s` }}
+        >
           {plates.map((shot, i) => (
             <ResultCard key={i} shot={shot} />
           ))}
