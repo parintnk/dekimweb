@@ -32,7 +32,7 @@ export default function AdminDashboard() {
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
       {/* hero cell */}
       <div className="relative overflow-hidden rounded-xl bg-navy p-6 md:col-span-2 xl:row-span-2 xl:p-7">
         <div

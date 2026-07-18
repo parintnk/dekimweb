@@ -292,7 +292,7 @@ export default function AdminRecordPage() {
           กำลังโหลดข้อมูล…
         </p>
       ) : (
-        <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
+        <div className="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
           {/* main column */}
           <div className="rounded-xl border border-line bg-surface p-5 shadow-xs md:p-6">
             <div className="space-y-5">{mainFields.map(fieldLabel)}</div>

@@ -44,7 +44,26 @@ const services = [
 // ponytail: the footer is always navy — it is the brand block, so it does not follow the theme.
 export default function Footer() {
   return (
-    <footer id="contact" className="scroll-mt-20 bg-navy text-white/70">
+    <footer
+      id="contact"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-gradient-to-b from-navy to-[#0b1024] text-white/70"
+    >
+      {/* decorative backdrop: gold hairline, soft glows, faint brand star */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
+        <div className="absolute -left-32 -top-24 size-96 rounded-full bg-gold/10 blur-3xl" />
+        <div className="absolute -bottom-40 right-1/4 size-96 rounded-full bg-gold/5 blur-3xl" />
+        <svg
+          viewBox="0 0 64 64"
+          className="absolute -bottom-16 -right-10 size-72 rotate-12 text-gold opacity-[0.05]"
+        >
+          <path
+            d="M32 10l5.6 13.5 14.6 1.17-11.13 9.53L44.47 48.5 32 40.9 19.53 48.5l3.4-14.3L11.8 24.67l14.6-1.17z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+
       <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>

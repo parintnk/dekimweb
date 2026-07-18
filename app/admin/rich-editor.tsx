@@ -374,7 +374,10 @@ export default function RichEditor({
   // keep in sync if the parent swaps content (no-op while typing — we emitted that HTML)
   useEffect(() => {
     if (!editor) return;
-    if (content !== editor.getHTML()) editor.commands.setContent(content);
+    // emitUpdate false — this programmatic sync must not count as a user edit
+    // (it was marking freshly-opened legacy records as dirty)
+    if (content !== editor.getHTML())
+      editor.commands.setContent(content, { emitUpdate: false });
   }, [content, editor]);
 
   if (!editor) return null;
