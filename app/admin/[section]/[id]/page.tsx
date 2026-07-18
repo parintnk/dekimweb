@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FiArrowLeft, FiSave, FiTrash2 } from "react-icons/fi";
 import { supabase } from "../../../lib/supabase";
 import { blocksToHtml } from "../../blocks-doc";
+import ConfirmDialog from "../../confirm-dialog";
 import ImageField from "../../image-field";
 import RichEditor from "../../rich-editor";
 import { sections, type Field } from "../../sections";
@@ -28,6 +29,7 @@ export default function AdminRecordPage() {
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
   const [dirty, setDirty] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [articleOptions, setArticleOptions] = useState<
     { slug: string; title: string }[]
   >([]);
@@ -115,10 +117,13 @@ export default function AdminRecordPage() {
   }
 
   async function remove() {
-    if (!confirm("ลบรายการนี้ถาวร?")) return;
+    setConfirmDelete(false);
     const { error } = await supabase.from(config.table).delete().eq("id", id);
     if (error) setStatus(`ลบไม่สำเร็จ: ${error.message}`);
-    else router.push(`/admin/${section}`);
+    else {
+      setDirty(false);
+      router.push(`/admin/${section}`);
+    }
   }
 
   function input(f: Field) {
@@ -316,7 +321,7 @@ export default function AdminRecordPage() {
               {!isNew && (
                 <button
                   type="button"
-                  onClick={remove}
+                  onClick={() => setConfirmDelete(true)}
                   className="mt-3 inline-flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-line text-xs font-medium text-ink-body shadow-xs transition-colors hover:border-red-300 hover:bg-red-500/10 hover:text-red-500"
                 >
                   <FiTrash2 size={13} aria-hidden />
@@ -345,6 +350,14 @@ export default function AdminRecordPage() {
           </aside>
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmDelete}
+        title={`ลบ${config.title}นี้ถาวร?`}
+        detail="ข้อมูลจะถูกลบออกจากระบบและหายจากหน้าเว็บภายใน 1 นาที การลบไม่สามารถย้อนกลับได้"
+        onConfirm={remove}
+        onCancel={() => setConfirmDelete(false)}
+      />
     </>
   );
 }

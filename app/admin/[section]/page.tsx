@@ -21,6 +21,7 @@ import { notFound, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FiMenu, FiPlus, FiTrash2 } from "react-icons/fi";
 import { supabase } from "../../lib/supabase";
+import ConfirmDialog from "../confirm-dialog";
 import { sections } from "../sections";
 
 type Row = Record<string, unknown> & { id?: string };
@@ -107,6 +108,7 @@ export default function AdminSection() {
   const config = sections[section];
   const [rows, setRows] = useState<Row[]>([]);
   const [status, setStatus] = useState("");
+  const [pendingDelete, setPendingDelete] = useState<Row | null>(null);
   const sensors = useSensors(useSensor(PointerSensor));
 
   const load = useCallback(async () => {
@@ -154,7 +156,7 @@ export default function AdminSection() {
   }
 
   async function remove(row: Row) {
-    if (!confirm("ลบรายการนี้?")) return;
+    setPendingDelete(null);
     const { error } = await supabase
       .from(config.table)
       .delete()
@@ -201,7 +203,7 @@ export default function AdminSection() {
                 imageKey={config.imageKey}
                 labelKey={config.labelKey}
                 href={`/admin/${section}/${row.id}`}
-                onDelete={() => remove(row)}
+                onDelete={() => setPendingDelete(row)}
               />
             ))}
             {!rows.length && (
@@ -212,6 +214,14 @@ export default function AdminSection() {
           </ul>
         </SortableContext>
       </DndContext>
+
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title="ลบรายการนี้?"
+        detail={`"${(pendingDelete?.[config.labelKey] as string) || "รายการนี้"}" จะถูกลบถาวรและหายจากหน้าเว็บภายใน 1 นาที`}
+        onConfirm={() => pendingDelete && remove(pendingDelete)}
+        onCancel={() => setPendingDelete(null)}
+      />
     </>
   );
 }

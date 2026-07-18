@@ -11,6 +11,7 @@ import {
   FiClock,
 } from "react-icons/fi";
 import SectionBackdrop from "../../components/section-backdrop";
+import ShareButtons from "../../components/share-buttons";
 import { LINE_URL, SITE_URL, externalLink } from "../../contact";
 import { articles } from "../articles";
 import { getArticles } from "../../lib/content";
@@ -270,6 +271,11 @@ export default async function ArticlePage({
                 </div>
               ))}
 
+            <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-6">
+              <p className="text-sm font-medium text-ink">แชร์บทความนี้</p>
+              <ShareButtons title={article.title} />
+            </div>
+
             <div className="mt-12 rounded-2xl bg-navy p-8 text-center">
               <h2 className="font-display text-2xl text-white">
                 ปรึกษาแพทย์ได้ฟรี ไม่มีค่าใช้จ่าย
@@ -372,6 +378,13 @@ export default async function ArticlePage({
                   <FaLine size={15} aria-hidden />
                   ทักไลน์เลย
                 </Link>
+              </div>
+
+              <div className="rounded-2xl border border-line bg-surface-2 p-6">
+                <p className="text-sm font-medium text-ink">แชร์บทความ</p>
+                <div className="mt-3">
+                  <ShareButtons title={article.title} />
+                </div>
               </div>
             </div>
           </aside>
