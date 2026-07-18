@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { FaLine } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
@@ -13,6 +14,32 @@ export const metadata: Metadata = {
     "บทความและเกร็ดความรู้ด้านความงามจากทีมแพทย์ Dr. KIM Clinic เชียงใหม่ — Mounjaro, Biostimulator, COOLTERA และอื่น ๆ",
 };
 
+// ponytail: newest-first is just array order in articles.ts — no dates on the source posts.
+const [featured, ...rest] = articles;
+
+function Cover({
+  article: a,
+  sizes,
+}: {
+  article: (typeof articles)[number];
+  sizes: string;
+}) {
+  return a.image ? (
+    <Image
+      src={a.image}
+      alt=""
+      fill
+      sizes={sizes}
+      className={`object-cover transition-transform duration-300 group-hover:scale-[1.03] ${a.imagePos ?? ""}`}
+    />
+  ) : (
+    <ImagePlaceholder
+      label={a.imageNote ?? "รอรูปประกอบจากคลินิก"}
+      className="absolute inset-0 rounded-none border-0"
+    />
+  );
+}
+
 export default function BlogPage() {
   return (
     <>
@@ -24,18 +51,55 @@ export default function BlogPage() {
 
       <section className="bg-surface">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {articles.map((a) => (
+          <Link
+            href={`/blog/${featured.slug}`}
+            className="group grid overflow-hidden rounded-3xl border border-line bg-surface-2 transition-all duration-200 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/5 lg:grid-cols-5"
+          >
+            <div className="relative aspect-video overflow-hidden lg:col-span-3 lg:aspect-auto lg:min-h-96">
+              <Cover
+                article={featured}
+                sizes="(min-width: 1024px) 60vw, 100vw"
+              />
+            </div>
+            <div className="flex flex-col justify-center p-7 md:p-10 lg:col-span-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-brand px-2.5 py-1 text-xs font-medium text-on-brand">
+                  บทความแนะนำ
+                </span>
+                <span className="rounded-full bg-gold/20 px-2.5 py-1 text-xs font-medium text-accent">
+                  {featured.category}
+                </span>
+              </div>
+              <h2 className="mt-4 font-display text-2xl leading-snug text-ink md:text-3xl">
+                {featured.title}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-ink-body">
+                {featured.excerpt}
+              </p>
+              <p className="mt-6 flex items-center gap-2 text-sm font-medium text-ink transition-colors duration-200 group-hover:text-accent">
+                อ่านบทความเต็ม
+                <FiArrowRight
+                  size={16}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden
+                />
+              </p>
+            </div>
+          </Link>
+
+          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.map((a) => (
               <li key={a.slug}>
                 <Link
                   href={`/blog/${a.slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/5"
                 >
-                  {/* ponytail: article covers still waiting on the clinic — label says which shot to send */}
-                  <ImagePlaceholder
-                    label={a.imageNote}
-                    className="aspect-video rounded-none border-0 border-b border-dashed border-ink-body/25"
-                  />
+                  <div className="relative aspect-video overflow-hidden border-b border-line">
+                    <Cover
+                      article={a}
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    />
+                  </div>
                   <div className="flex flex-1 flex-col p-5">
                     <span className="self-start rounded-full bg-gold/20 px-2.5 py-1 text-xs font-medium text-accent">
                       {a.category}

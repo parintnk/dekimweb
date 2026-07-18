@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiAward, FiCheck } from "react-icons/fi";
 import { LINE_URL, externalLink } from "../contact";
+import SectionBackdrop from "./section-backdrop";
 
 // ponytail: straight from the client brief — license and ว. number are the trust anchor, not decoration.
 const credentials = [
@@ -13,9 +14,13 @@ const credentials = [
 
 export default function Doctor() {
   return (
-    <section id="about" className="scroll-mt-20 bg-surface-2">
+    <section
+      id="about"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-surface-2"
+    >
+      <SectionBackdrop />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-2 lg:gap-16">
-        <div className="relative mx-auto w-full max-w-md lg:mx-0">
+        <div className="reveal relative mx-auto w-full max-w-md lg:mx-0">
           {/* ponytail: source is 2:3, plate is 4:5 — object-top keeps his face and crops the stool */}
           <div className="relative aspect-4/5 overflow-hidden rounded-3xl border border-line bg-surface-3">
             <Image
@@ -43,7 +48,7 @@ export default function Doctor() {
           </div>
         </div>
 
-        <div className="mt-10 lg:mt-0">
+        <div className="reveal mt-10 lg:mt-0">
           <p className="flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
             <span className="h-px w-8 bg-gold" aria-hidden />
             แพทย์ผู้ดูแล

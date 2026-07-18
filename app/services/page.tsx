@@ -213,6 +213,14 @@ export default function ServicesPage() {
                       ))}
                     </tbody>
                   </table>
+
+                  <Link
+                    href={`/services/${c.id}`}
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors duration-200 hover:text-accent"
+                  >
+                    อ่านข้อมูลเพิ่มเติมเกี่ยวกับ {c.title}
+                    <FiArrowRight size={16} aria-hidden />
+                  </Link>
                 </div>
               </article>
             ))}
@@ -292,6 +300,14 @@ export default function ServicesPage() {
               ราคาต่อครั้งมีค่าฉีดเพิ่ม 100.- · แพ็กเกจ 4 ครั้งและเหมาด้าม
               ฟรีค่าฉีด
             </p>
+
+            <Link
+              href="/services/weight-management"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gold transition-opacity duration-200 hover:opacity-80"
+            >
+              อ่านข้อมูลเพิ่มเติมเกี่ยวกับโปรแกรมลดน้ำหนัก
+              <FiArrowRight size={16} aria-hidden />
+            </Link>
           </div>
 
           <div className="mt-10 text-center">

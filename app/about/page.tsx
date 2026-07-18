@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   FiAward,
   FiBox,
@@ -13,7 +14,6 @@ import {
 } from "react-icons/fi";
 import Doctor from "../components/doctor";
 import Team from "../components/team";
-import ImagePlaceholder from "../components/image-placeholder";
 import PageHeader from "../components/page-header";
 
 export const metadata: Metadata = {
@@ -86,11 +86,57 @@ const steps = [
   },
 ];
 
+// ponytail: real photos from the clinic (received 2026-07-18). Mixed orientations,
+// so the gallery lays out with CSS columns instead of a grid — no row-span math.
 const gallery = [
-  "รูปหน้าร้านและป้ายคลินิก",
-  "รูปเคาน์เตอร์ต้อนรับ / โถงรอ",
-  "รูปห้องทรีตเมนต์และเครื่องมือ",
-  "รูปทีมแพทย์และพนักงาน",
+  {
+    src: "/clinic/storefront.jpg",
+    w: 1536,
+    h: 1024,
+    alt: "หน้าร้าน Dr. KIM Clinic",
+  },
+  {
+    src: "/clinic/lobby.jpg",
+    w: 1570,
+    h: 1001,
+    alt: "โถงต้อนรับพร้อมเปียโนและโซฟากำมะหยี่น้ำเงิน",
+  },
+  {
+    src: "/clinic/lounge.jpg",
+    w: 1024,
+    h: 1536,
+    alt: "มุมนั่งรอโทนน้ำเงิน-ทอง",
+  },
+  {
+    src: "/clinic/gallery-hall.jpg",
+    w: 1537,
+    h: 1023,
+    alt: "ทางเดินภายในคลินิกและใบประกาศนียบัตร",
+  },
+  {
+    src: "/clinic/treatment-room.jpg",
+    w: 1564,
+    h: 1006,
+    alt: "ห้องทรีตเมนต์พร้อมเตียงของคลินิก",
+  },
+  {
+    src: "/clinic/doctor-treatment.jpg",
+    w: 1536,
+    h: 1024,
+    alt: "แพทย์ขณะทำหัตถการด้วยเครื่องยกกระชับ",
+  },
+  {
+    src: "/clinic/devices.jpg",
+    w: 1536,
+    h: 1024,
+    alt: "เครื่องเลเซอร์และเครื่องยกกระชับของคลินิก",
+  },
+  {
+    src: "/clinic/consult-room.jpg",
+    w: 1536,
+    h: 1024,
+    alt: "ห้องตรวจและให้คำปรึกษา",
+  },
 ];
 
 export default function AboutPage() {
@@ -189,13 +235,21 @@ export default function AboutPage() {
             บรรยากาศคลินิก
           </h2>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {gallery.map((label) => (
-              <ImagePlaceholder
-                key={label}
-                label={label}
-                className="aspect-4/3"
-              />
+          <div className="mt-10 columns-2 gap-5 lg:columns-3">
+            {gallery.map((g) => (
+              <div
+                key={g.src}
+                className="mb-5 break-inside-avoid overflow-hidden rounded-2xl border border-line"
+              >
+                <Image
+                  src={g.src}
+                  alt={g.alt}
+                  width={g.w}
+                  height={g.h}
+                  sizes="(min-width: 1024px) 33vw, 50vw"
+                  className="w-full transition-transform duration-300 hover:scale-[1.03]"
+                />
+              </div>
             ))}
           </div>
 

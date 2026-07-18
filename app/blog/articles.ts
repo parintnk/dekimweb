@@ -1,13 +1,20 @@
 // ponytail: transcribed from the clinic's own Google Site blog (sites.google.com/view/dr-kim-clinic-cnx,
-// fetched 2026-07-17) — their copy, lightly reflowed. New articles get added here.
-export type Block = { h?: string; p?: string; list?: string[] };
+// fetched 2026-07-17; images pulled 2026-07-18) — their copy, lightly reflowed. New articles get added here.
+export type Block = {
+  h?: string;
+  p?: string;
+  list?: string[];
+  img?: { src: string; alt: string; w: number; h: number };
+};
 
 export type Article = {
   slug: string;
   title: string;
   category: string;
   excerpt: string;
-  imageNote: string;
+  image?: string; // listing cover; body images live in blocks
+  imagePos?: string; // object-position class when the cover crop needs steering
+  imageNote?: string; // what shot to ask the clinic for, when there is no image yet
   blocks: Block[];
 };
 
@@ -18,7 +25,7 @@ export const articles: Article[] = [
     category: "Weight Management",
     excerpt:
       "รู้จักยา Dual Incretin ที่รวมพลังฮอร์โมน GIP + GLP-1 กลไกการทำงาน จุดเด่น และเหมาะกับใครบ้าง",
-    imageNote: "แนะนำ: รูปปากกา Mounjaro หรือภาพปรึกษาแพทย์",
+    image: "/blog/mounjaro-success.jpg",
     blocks: [
       {
         p: "การลดน้ำหนักเพื่อรูปร่างที่ดีและสุขภาพที่แข็งแรงในระยะยาว ไม่ใช่แค่เรื่องของการอดอาหารหรือการออกกำลังกายอย่างหักโหมครับ เพราะหลายครั้ง “ความหิวและระบบเผาผลาญ” ถูกควบคุมด้วยกลไกฮอร์โมนภายในร่างกายที่ยากจะควบคุมด้วยใจ",
@@ -60,6 +67,14 @@ export const articles: Article[] = [
         h: "ปลอดภัย มั่นใจ ภายใต้การดูแลของหมอคิม",
         p: "การใช้ยากลุ่ม Dual Incretin จำเป็นต้องผ่านการประเมินร่างกาย ตรวจเช็กข้อห้ามทางการแพทย์ และคำนวณปริมาณยาอย่างละเอียดโดยแพทย์เท่านั้น ที่ Dr. KIM CLINIC คุณหมอคิมพร้อมดูแลและติดตามผลอย่างใกล้ชิดตลอดโปรแกรม ยินดีต้อนรับทุกท่านเข้ามาปรึกษาได้ฟรีไม่มีค่าใช้จ่ายครับ",
       },
+      {
+        img: {
+          src: "/blog/mounjaro-success.jpg",
+          alt: "อินโฟกราฟิก เคล็ดลับความสำเร็จในการใช้ปากกาลดน้ำหนัก โดย Dr. KIM Clinic",
+          w: 1280,
+          h: 911,
+        },
+      },
     ],
   },
   {
@@ -68,7 +83,7 @@ export const articles: Article[] = [
     category: "Weight Management",
     excerpt:
       "ตั้งแต่เกณฑ์วินิจฉัย การรับมือผลข้างเคียง โภชนาการ 4 หมวด ไปจนถึงการออกกำลังกายและสถิติการคงน้ำหนัก",
-    imageNote: "แนะนำ: รูปการปรึกษา/ติดตามผลกับแพทย์",
+    image: "/blog/mounjaro-selfcare.jpg",
     blocks: [
       {
         p: "การลดน้ำหนักด้วยปากกา Mounjaro (Tirzepatide) ให้ปลอดภัยและไม่กลับมาอ้วนอีก ต้องอาศัย “ความเข้าใจและการปฏิบัติตัวที่ถูกต้อง” ควบคู่กันไป Dr. KIM CLINIC สรุปแนวทางดูแลตัวเองตั้งแต่เริ่มต้นจนจบโปรแกรมไว้ให้แล้วครับ",
@@ -117,6 +132,23 @@ export const articles: Article[] = [
         h: "ลดน้ำหนักอย่างปลอดภัยและเห็นผลจริง",
         p: "ที่ Dr. KIM CLINIC คุณหมอคิมพร้อมให้คำปรึกษา ออกแบบโปรแกรมตรวจเช็กสุขภาพ คำนวณปริมาณยาอย่างแม่นยำ และติดตามอาการของคนไข้ทุกเคสอย่างสม่ำเสมอ เพื่อให้คุณหุ่นสวย สุขภาพดี อย่างยั่งยืนครับ",
       },
+      {
+        h: "สรุปครบในอินโฟกราฟิก",
+        img: {
+          src: "/blog/mounjaro-success.jpg",
+          alt: "อินโฟกราฟิก เคล็ดลับความสำเร็จในการใช้ปากกาลดน้ำหนัก โดย Dr. KIM Clinic",
+          w: 1280,
+          h: 911,
+        },
+      },
+      {
+        img: {
+          src: "/blog/mounjaro-selfcare.jpg",
+          alt: "อินโฟกราฟิก แนวทางดูแลผู้ใช้ปากกาลดน้ำหนัก อาการทางเดินอาหาร โภชนาการ และการออกกำลังกาย",
+          w: 1280,
+          h: 906,
+        },
+      },
     ],
   },
   {
@@ -125,7 +157,7 @@ export const articles: Article[] = [
     category: "Biostimulator",
     excerpt:
       "Sculptra vs Aesthefill vs Olidia 120 — สารกระตุ้นคอลลาเจนแต่ละแบรนด์ต่างกันอย่างไร เหมาะกับใคร",
-    imageNote: "แนะนำ: รูปผลิตภัณฑ์ 3 แบรนด์ / ตารางเปรียบเทียบ",
+    image: "/blog/biostimulator-compare.jpg",
     blocks: [
       {
         p: "สารฉีดกระตุ้นการสร้างคอลลาเจนธรรมชาติ หรือ Biostimulator เป็นทางเลือกยอดนิยมของผู้ที่ต้องการย้อนวัยผิวอย่างยั่งยืน แต่แม้จะกระตุ้นคอลลาเจนเหมือนกัน แต่ละแบรนด์ก็มีสารสำคัญ คอนเซ็ปต์ และผลลัพธ์เด่นที่ต่างกันชัดเจน",
@@ -143,6 +175,15 @@ export const articles: Article[] = [
         p: "นิยามใหม่ของงานผิวสำหรับคนรุ่นใหม่ (อายุ 25–35 ปี) ที่อยากเริ่มดูแลตั้งแต่เนิ่น ๆ หรือมีข้อจำกัดด้านงบประมาณ เน้นความแม่นยำเฉพาะจุด ผิวดูละเอียด รูขุมขนกระชับ สดใสขึ้น เป็นตัวเลือก Smart Premium ที่เข้าถึงง่าย",
       },
       {
+        h: "ตารางเปรียบเทียบ Sculptra vs Aesthefill vs Olidia 120",
+        img: {
+          src: "/blog/biostimulator-compare.jpg",
+          alt: "ตารางเปรียบเทียบสารสำคัญ คอนเซ็ปต์ ผลลัพธ์เด่น กลุ่มเป้าหมาย และระดับราคา ของ Sculptra, Aesthefill และ Olidia 120",
+          w: 1280,
+          h: 629,
+        },
+      },
+      {
         h: "เลือกแบรนด์ไหนดี? ให้หมอคิมช่วยประเมิน",
         p: "เพราะปัญหาผิวของแต่ละคนไม่เหมือนกัน ที่ Dr. KIM CLINIC คุณหมอคิมจะประเมินโครงสร้างใบหน้า ปริมาณชั้นไขมัน และความหนาของชั้นผิวแบบเคสต่อเคส เพื่อเลือกแบรนด์ที่ตอบโจทย์ที่สุดอย่างปลอดภัยครับ",
       },
@@ -154,7 +195,8 @@ export const articles: Article[] = [
     category: "Energy-Based Device",
     excerpt:
       "LIFTERA 2 + COOLFASE สองเทคโนโลยียกกระชับในโปรแกรมเดียว เครื่องแรกและเครื่องเดียวในเชียงใหม่",
-    imageNote: "แนะนำ: รูปเครื่อง LIFTERA 2 / COOLFASE ขณะทำทรีตเมนต์",
+    image: "/blog/cooltera-program.jpg",
+    imagePos: "object-top",
     blocks: [
       {
         p: "ปัญหากรอบหน้าไม่ชัด แก้มห้อย และผิวขาดความตึงกระชับ ปัจจุบันแก้ได้โดยไม่ต้องแลกกับการพักฟื้นยาวนาน Dr. KIM CLINIC นำเข้าโปรแกรม COOLTERA — พลังงาน 2 เทคโนโลยีในโปรแกรมเดียว โดยเราเป็นคลินิกเครื่องแรกและเครื่องเดียวในจังหวัดเชียงใหม่",
@@ -191,6 +233,14 @@ export const articles: Article[] = [
       },
       {
         p: "ยินดีต้อนรับทุกท่านเข้ามาปรึกษา วิเคราะห์รูปหน้า และออกแบบแนวทางการรักษาร่วมกับคุณหมอคิมได้ฟรี ไม่มีค่าใช้จ่ายครับ",
+      },
+      {
+        img: {
+          src: "/blog/cooltera-program.jpg",
+          alt: "โปสเตอร์โปรแกรม COOLTERA — LIFTERA 2 และ COOLFASE พลังงาน 2 เทคโนโลยีในโปรแกรมเดียว",
+          w: 1280,
+          h: 1810,
+        },
       },
     ],
   },

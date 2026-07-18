@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { FaLine } from "react-icons/fa";
 import { FiMaximize2, FiX } from "react-icons/fi";
 import { LINE_URL, externalLink } from "../contact";
+import SectionBackdrop from "./section-backdrop";
 
 // ponytail: the posters are the content — every price and condition is baked into the artwork.
 const promotions = [
@@ -47,7 +48,11 @@ export default function Promotions() {
   }
 
   return (
-    <section id="promotion" className="scroll-mt-20 bg-surface-2">
+    <section
+      id="promotion"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-surface-2"
+    >
+      <SectionBackdrop />
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         <p className="flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
           <span className="h-px w-8 bg-gold" aria-hidden />
@@ -75,7 +80,7 @@ export default function Promotions() {
 
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {promotions.map((p) => (
-            <li key={p.src}>
+            <li key={p.src} className="reveal">
               <button
                 type="button"
                 onClick={() => open(p)}

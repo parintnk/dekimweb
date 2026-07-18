@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import { LINE_URL, externalLink } from "../contact";
+import SectionBackdrop from "./section-backdrop";
 
 // ponytail: prices are the "เริ่มต้น" of each category from the client brief.
 // Full per-brand tables live on the (not yet built) detail pages.
@@ -71,7 +72,11 @@ const services = [
 export default function Services() {
   // ponytail: scroll-mt keeps the heading clear of the sticky navbar on #services jumps
   return (
-    <section id="services" className="scroll-mt-20 bg-surface-2">
+    <section
+      id="services"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-surface-2"
+    >
+      <SectionBackdrop />
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         <p className="flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
           <span className="h-px w-8 bg-gold" aria-hidden />
@@ -94,7 +99,7 @@ export default function Services() {
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map(
             ({ image, slug, title, subtitle, detail, brands, from, unit }) => (
-              <li key={title}>
+              <li key={title} className="reveal">
                 <Link
                   href={`/services#${slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/5"
@@ -157,9 +162,19 @@ export default function Services() {
           )}
         </ul>
 
-        {/* ponytail: Mounjaro gets the navy band — the brief flags it as the priority service */}
-        <div className="mt-6 overflow-hidden rounded-2xl bg-navy p-8 md:p-10">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+        {/* ponytail: Mounjaro gets the navy band — the brief flags it as the priority service.
+            The consult-room photo sits behind a navy gradient: text stays on solid navy, the room peeks out right. */}
+        <div className="reveal relative mt-6 overflow-hidden rounded-2xl bg-navy p-8 md:p-10">
+          <Image
+            src="/clinic/consult-room.jpg"
+            alt=""
+            fill
+            sizes="(min-width: 1280px) 80rem, 100vw"
+            data-parallax
+            className="scale-110 object-cover object-right"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/60" />
+          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-xs font-medium tracking-[0.2em] text-gold">
                 WEIGHT MANAGEMENT

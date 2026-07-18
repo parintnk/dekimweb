@@ -3,6 +3,7 @@ import { Playfair_Display, Sarabun } from "next/font/google";
 import "./globals.css";
 import ContactFab from "./components/contact-fab";
 import Footer from "./components/footer";
+import GsapEffects from "./components/gsap-effects";
 import MobileCtaBar from "./components/mobile-cta-bar";
 import Navbar from "./components/navbar";
 
@@ -55,6 +56,7 @@ export default function RootLayout({
         <Footer />
         <ContactFab />
         <MobileCtaBar />
+        <GsapEffects />
       </body>
     </html>
   );

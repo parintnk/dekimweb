@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiStar } from "react-icons/fi";
 import { GOOGLE_REVIEWS_URL, externalLink } from "../contact";
+import SectionBackdrop from "./section-backdrop";
 
 // ponytail: copied from Google on 2026-07-17 — excerpts trimmed, attributed, avatars saved to
 // public/reviews (2 of them are Google's own letter avatars, not photos). This goes stale and new
@@ -56,7 +57,11 @@ function Stars({ label }: { label: string }) {
 
 export default function Reviews() {
   return (
-    <section id="reviews" className="scroll-mt-20 bg-surface">
+    <section
+      id="reviews"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-surface"
+    >
+      <SectionBackdrop flip />
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         <p className="flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
           <span className="h-px w-8 bg-gold" aria-hidden />
@@ -79,7 +84,7 @@ export default function Reviews() {
 
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {/* ponytail: the aggregate score is the strongest proof here, so it gets a card, not a caption */}
-          <li className="rounded-2xl bg-navy p-6 text-white/70">
+          <li className="reveal rounded-2xl bg-navy p-6 text-white/70">
             <p className="font-display text-5xl tabular-nums text-white">5.0</p>
             <div className="mt-3">
               <Stars label="5 จาก 5 ดาว" />
@@ -104,7 +109,7 @@ export default function Reviews() {
           {reviews.map((r) => (
             <li
               key={r.name}
-              className="flex flex-col rounded-2xl border border-line bg-surface-2 p-6"
+              className="reveal flex flex-col rounded-2xl border border-line bg-surface-2 p-6"
             >
               <div className="flex items-center gap-3">
                 <Image

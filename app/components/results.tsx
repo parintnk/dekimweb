@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import { LINE_URL, externalLink } from "../contact";
+import SectionBackdrop from "./section-backdrop";
 
 // ponytail: photos only — no captions. Swap the plate for <Image fill /> per item when they arrive.
 const results = Array.from({ length: 8 }, (_, i) => ({ id: i + 1 }));
@@ -17,9 +18,10 @@ export default function Results() {
   return (
     <section
       id="results"
-      className="scroll-mt-20 overflow-hidden bg-surface py-20 md:py-28"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-surface py-20 md:py-28"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <SectionBackdrop flip />
+      <div className="reveal mx-auto max-w-7xl px-6">
         <p className="flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
           <span className="h-px w-8 bg-gold" aria-hidden />
           ผลลัพธ์จริงจากคนไข้ของเรา
@@ -46,7 +48,7 @@ export default function Results() {
       </div>
 
       {/* ponytail: full-bleed on purpose — the row should run off both edges, not stop at the container */}
-      <div className="relative mt-12">
+      <div className="reveal relative mt-12">
         <ul className="flex w-max animate-marquee gap-5 hover:[animation-play-state:paused]">
           {results.map((r) => (
             <ResultCard key={r.id} />

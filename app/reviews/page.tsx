@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FaLine } from "react-icons/fa";
 import { FiCheck, FiExternalLink } from "react-icons/fi";
+import Results from "../components/results";
 import Reviews from "../components/reviews";
 import { GOOGLE_REVIEWS_URL, LINE_URL, externalLink } from "../contact";
 
@@ -31,6 +32,11 @@ export default function ReviewsPage() {
   return (
     <>
       <Reviews />
+
+      {/* ponytail: same marquee as the home page — one source of truth for the plates */}
+      <div className="border-t border-line">
+        <Results />
+      </div>
 
       <section className="border-t border-line bg-surface-2">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:py-20 lg:grid-cols-2">

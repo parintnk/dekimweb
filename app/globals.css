@@ -64,10 +64,44 @@
   --ring: #fabd11;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--surface);
   color: var(--ink-body);
   font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-navy);
+}
+
+/* ponytail: hero entrance stays CSS (plays before JS loads, no flash). Scroll reveals for
+   `.reveal` moved to GSAP ScrollTrigger — see components/gsap-effects.tsx. */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.enter,
+.enter-2,
+.enter-3,
+.enter-4 {
+  animation: fade-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.enter-2 {
+  animation-delay: 120ms;
+}
+.enter-3 {
+  animation-delay: 240ms;
+}
+.enter-4 {
+  animation-delay: 360ms;
 }
 
 :focus-visible {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaLine, FaTiktok } from "react-icons/fa";
 import {
@@ -133,13 +134,26 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <div className="overflow-hidden rounded-2xl border border-line">
+            {/* ponytail: real storefront photo above the map — easier to spot the building than pins */}
+            <div className="relative aspect-video overflow-hidden rounded-2xl border border-line">
+              <Image
+                src="/clinic/storefront.jpg"
+                alt="หน้าร้าน Dr. KIM Clinic ริมถนนรัตนโกสินทร์"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+              <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">
+                มองหาตึกนี้ได้เลย — ป้าย Dr. KIM CLINIC ริมถนนรัตนโกสินทร์
+              </p>
+            </div>
+            <div className="mt-5 overflow-hidden rounded-2xl border border-line">
               <iframe
                 title="แผนที่ หมอคิมคลินิกเวชกรรม เชียงใหม่"
                 src={MAP_EMBED}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="h-80 w-full lg:h-full lg:min-h-96"
+                className="h-80 w-full"
               />
             </div>
             <Link

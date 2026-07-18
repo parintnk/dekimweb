@@ -20,7 +20,7 @@ export default function HeroMobile() {
       {/* ponytail: two stops — lifts the card off the photo, keeps her face untouched */}
       <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-surface-2 via-surface-2/40 to-transparent" />
 
-      <div className="relative mx-4 mb-24 rounded-[1.75rem] border border-line bg-surface-2/80 p-6 shadow-2xl shadow-navy/10 backdrop-blur-xl">
+      <div className="enter relative mx-4 mb-24 rounded-[1.75rem] border border-line bg-surface-2/80 p-6 shadow-2xl shadow-navy/10 backdrop-blur-xl">
         <p className="flex items-center gap-2.5 text-xs font-medium tracking-wide text-accent">
           <span className="h-px w-6 bg-gold" aria-hidden />
           เพราะความสวยคือความมั่นใจ
