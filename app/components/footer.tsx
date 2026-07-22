@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaLine, FaTiktok } from "react-icons/fa";
 import { FiClock, FiMapPin, FiPhone } from "react-icons/fi";
@@ -67,13 +68,13 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="notranslate font-display text-2xl tracking-wide text-white">
-              Dr. <span className="font-bold">KIM</span>
-            </p>
-            <p className="mt-1 flex items-center gap-2 text-[0.6rem] tracking-[0.35em] text-gold">
-              <span className="h-px w-6 bg-gold" aria-hidden />
-              CLINIC
-            </p>
+            <Image
+              src="/star.png"
+              alt="Dr. KIM Clinic"
+              width={512}
+              height={512}
+              className="h-28 w-28"
+            />
 
             <p className="mt-5 max-w-xs text-sm leading-7">
               คลินิกเวชกรรมด้านความงาม ดูแลโดยแพทย์ผู้เชี่ยวชาญ

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -53,13 +54,22 @@ export default function MobileMenu({ links }: { links: MenuLink[] }) {
         }`}
       >
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
-          <span className="leading-none">
-            <span className="font-display text-xl tracking-wide text-ink">
-              Dr. <span className="font-bold">KIM</span>
-            </span>
-            <span className="mt-1 flex items-center gap-2 text-[0.55rem] tracking-[0.35em] text-accent">
-              <span className="h-px w-4 bg-gold" aria-hidden />
-              CLINIC
+          <span className="flex items-center gap-2.5">
+            <Image
+              src="/star.png"
+              alt=""
+              width={512}
+              height={512}
+              className="h-8 w-8 shrink-0"
+            />
+            <span className="leading-none">
+              <span className="font-display text-xl tracking-wide text-ink">
+                Dr. <span className="font-bold">KIM</span>
+              </span>
+              <span className="mt-1 flex items-center gap-2 text-[0.55rem] tracking-[0.35em] text-accent">
+                <span className="h-px w-4 bg-gold" aria-hidden />
+                CLINIC
+              </span>
             </span>
           </span>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LINE_URL, externalLink } from "../contact";
@@ -21,17 +22,17 @@ function Logo() {
   return (
     <Link
       href="/"
-      className="block leading-none"
+      className="block"
       aria-label="Dr. KIM Clinic หน้าแรก"
     >
-      <span className="notranslate font-display text-2xl tracking-wide text-ink">
-        Dr. <span className="font-bold">KIM</span>
-      </span>
-      <span className="mt-1 flex items-center gap-2 text-[0.6rem] tracking-[0.35em] text-accent">
-        <span className="h-px flex-1 bg-gold" />
-        CLINIC
-        <span className="h-px flex-1 bg-gold" />
-      </span>
+      <Image
+        src="/star.png"
+        alt="Dr. KIM Clinic"
+        width={512}
+        height={512}
+        priority
+        className="h-16 w-16 sm:h-20 sm:w-20"
+      />
     </Link>
   );
 }
