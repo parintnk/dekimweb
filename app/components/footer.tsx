@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaLine, FaTiktok } from "react-icons/fa";
 import { FiClock, FiMapPin, FiPhone } from "react-icons/fi";
+import { getServiceDetails } from "../lib/content";
 import {
   FACEBOOK_URL,
   INSTAGRAM_URL,
@@ -32,18 +33,13 @@ const menu = [
   { label: "ติดต่อเรา", href: "/contact" },
 ];
 
-const services = [
-  { label: "Botox", href: "/services#botox" },
-  { label: "Filler", href: "/services#filler" },
-  { label: "Biostimulator", href: "/services#biostimulator" },
-  { label: "Mesotherapy", href: "/services#mesotherapy" },
-  { label: "IV Drip", href: "/services#iv-drip" },
-  { label: "Energy-Based Device", href: "/services#energy-device" },
-  { label: "Mounjaro ลดน้ำหนัก", href: "/services#mounjaro" },
-];
-
 // ponytail: the footer is always navy — it is the brand block, so it does not follow the theme.
-export default function Footer() {
+export default async function Footer() {
+  // services list follows the admin — hidden ones are already filtered out (same 60s cache)
+  const services = (await getServiceDetails()).map((s) => ({
+    label: s.title,
+    href: `/services/${s.slug}`,
+  }));
   return (
     <footer
       id="contact"
