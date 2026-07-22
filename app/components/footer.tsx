@@ -61,7 +61,8 @@ export default async function Footer() {
         </svg>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+      {/* ponytail: extra bottom padding on mobile clears the fixed booking CTA bar (md:hidden) */}
+      <div className="mx-auto max-w-7xl px-6 pt-16 pb-[calc(6rem+env(safe-area-inset-bottom))] md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Image
