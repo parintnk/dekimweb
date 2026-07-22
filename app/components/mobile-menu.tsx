@@ -56,7 +56,7 @@ export default function MobileMenu({ links }: { links: MenuLink[] }) {
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <span className="flex items-center gap-2.5">
             <Image
-              src="/star.png"
+              src="/logo.png"
               alt=""
               width={512}
               height={512}

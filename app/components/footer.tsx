@@ -65,11 +65,11 @@ export default async function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Image
-              src="/star.png"
+              src="/Ci DR KIM 01.png"
               alt="Dr. KIM Clinic"
               width={512}
               height={512}
-              className="h-28 w-28"
+              className="h-22 w-auto"
             />
 
             <p className="mt-5 max-w-xs text-sm leading-7">

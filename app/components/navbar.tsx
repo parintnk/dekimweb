@@ -26,12 +26,12 @@ function Logo() {
       aria-label="Dr. KIM Clinic หน้าแรก"
     >
       <Image
-        src="/star.png"
+        src="/Ci DR KIM 01.png"
         alt="Dr. KIM Clinic"
         width={512}
         height={512}
         priority
-        className="h-16 w-16 sm:h-20 sm:w-20"
+        className="h-16 w-auto sm:h-18 sm:w-auto py-2"
       />
     </Link>
   );
