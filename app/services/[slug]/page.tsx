@@ -13,7 +13,6 @@ import SectionBackdrop from "../../components/section-backdrop";
 import { LINE_URL, externalLink } from "../../contact";
 import { getServiceDetails } from "../../lib/content";
 import { serviceDetails } from "../details";
-import { serviceRates } from "../rates";
 
 export const revalidate = 60;
 
@@ -51,7 +50,8 @@ export default async function ServiceDetailPage({
   if (!service) notFound();
 
   // ponytail: the full rate card stays on /services — the sidebar shows this service's rows
-  const rates = serviceRates[slug];
+  const rates = service.rates ?? [];
+  const fit = service.fit;
   const priceHref =
     slug === "weight-management" ? "/services#mounjaro" : `/services#${slug}`;
   const others = all.filter((s) => s.slug !== slug && s.image).slice(0, 2);
@@ -97,9 +97,9 @@ export default async function ServiceDetailPage({
             {service.tagline}
           </p>
 
-          {rates && (
+          {fit && (
             <p className="enter-4 mt-6 inline-block rounded-lg bg-surface px-4 py-2.5 text-xs leading-6 text-accent shadow-xs">
-              เหมาะสำหรับ: {rates.fit}
+              เหมาะสำหรับ: {fit}
             </p>
           )}
         </div>
@@ -282,13 +282,13 @@ export default async function ServiceDetailPage({
           {/* price + LINE rail — first in DOM so phones see the price before the long read */}
           <aside className="order-first lg:order-2 lg:sticky lg:top-24">
             <div className="space-y-4">
-              {rates && (
+              {rates.length > 0 && (
                 <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-xs">
                   <p className="border-b border-line bg-surface-2/60 px-5 py-3.5 text-sm font-semibold text-ink">
                     ราคา {service.title}
                   </p>
                   <ul className="divide-y divide-line px-5">
-                    {rates.rows.map((r) => (
+                    {rates.map((r) => (
                       <li
                         key={r.name}
                         className="flex items-baseline justify-between gap-3 py-3"

@@ -13,8 +13,17 @@ export type Field = {
   key: string;
   label: string;
   type:
-    "text" | "textarea" | "image" | "number" | "blocks" | "tags" | "article";
+    | "text"
+    | "textarea"
+    | "image"
+    | "number"
+    | "blocks"
+    | "tags"
+    | "article"
+    | "rates"
+    | "mrates";
   hint?: string;
+  onlySlug?: string; // field shows only when the record's slug matches (e.g. Mounjaro table)
 };
 
 export type Section = {
@@ -59,6 +68,25 @@ export const sections: Record<string, Section> = {
         hint: "แนะนำ 1200×900 px (สัดส่วน 4:3)",
       },
       { key: "card_detail", label: "คำอธิบายสั้นบนการ์ด", type: "text" },
+      {
+        key: "fit",
+        label: "เหมาะสำหรับ",
+        type: "text",
+        hint: "บรรทัด “เหมาะสำหรับ:” บนหน้า /services และหัวหน้ารายละเอียด",
+      },
+      {
+        key: "rates",
+        label: "ตารางราคา",
+        type: "rates",
+        hint: "แสดงบนหน้า /services และแถบราคาในหน้ารายละเอียด",
+      },
+      {
+        key: "mounjaro_rates",
+        label: "ตารางราคา Mounjaro (แถบสีน้ำเงิน)",
+        type: "mrates",
+        onlySlug: "weight-management",
+        hint: "เฉพาะโปรแกรมลดน้ำหนัก — แสดงในแถบ Mounjaro ท้ายหน้า /services",
+      },
       { key: "brands", label: "แบรนด์ (คั่นด้วย ,)", type: "tags" },
       {
         key: "price_from",

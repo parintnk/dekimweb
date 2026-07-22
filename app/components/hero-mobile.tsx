@@ -29,14 +29,13 @@ export default function HeroMobile() {
         </p>
 
         <h1 className="enter-2 mt-4 font-display text-[2.7rem] leading-[1.12] tracking-tight text-white">
-          เผยผิวสวย
+          Your beauty
           <br />
-          มั่นใจในแบบคุณ
+          is our duty
         </h1>
 
         <p className="enter-3 mt-4 max-w-[18rem] text-sm leading-7 text-white/75">
-          ดูแลโดยแพทย์ผู้เชี่ยวชาญ ด้วยเทคโนโลยีที่ทันสมัย
-          ได้ผลลัพธ์ที่เป็นธรรมชาติ
+          เพราะความสวย ความดูดี คือหน้าที่ของเรา
         </p>
 
         <Link

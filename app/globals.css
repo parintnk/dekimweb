@@ -340,6 +340,31 @@ font[style] {
   box-shadow: none !important;
 }
 
+/* shimmering metallic gold — a bright band sweeps across the gold gradient (mobile booking CTA).
+   The prefers-reduced-motion rule below freezes the sweep, leaving a static gold. */
+@keyframes shimmer-gold {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+.shimmer-gold {
+  background-image: linear-gradient(
+    110deg,
+    #b8912f 0%,
+    #d9b45c 20%,
+    #f4e2a8 42%,
+    #fff2cc 50%,
+    #f4e2a8 58%,
+    #d9b45c 80%,
+    #b8912f 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-gold 3.5s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

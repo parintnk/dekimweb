@@ -7,6 +7,13 @@ export type RateRow = {
   price: string;
 };
 
+export type MounjaroRate = {
+  dose: string;
+  once: string;
+  four: string;
+  pen: string;
+};
+
 export const serviceRates: Record<string, { fit: string; rows: RateRow[] }> = {
   botox: {
     fit: "ริ้วรอยหน้าผาก คิ้วขมวด ตีนกา กรามใหญ่ เรียวหน้า",
@@ -97,7 +104,7 @@ export const serviceRates: Record<string, { fit: string; rows: RateRow[] }> = {
   },
 };
 
-export const mounjaroRates = [
+export const mounjaroRates: MounjaroRate[] = [
   { dose: "2.5 mg.", once: "1,990", four: "7,800", pen: "13,900" },
   { dose: "5.0 mg.", once: "3,590", four: "14,000", pen: "16,900" },
   { dose: "7.5 mg.", once: "4,590", four: "18,000", pen: "19,900" },

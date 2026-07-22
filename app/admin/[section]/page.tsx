@@ -19,7 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { FiMenu, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiMenu, FiPlus, FiTrash2 } from "react-icons/fi";
 import { supabase } from "../../lib/supabase";
 import ConfirmDialog from "../confirm-dialog";
 import { sections } from "../sections";
@@ -32,13 +32,16 @@ function SortableRow({
   labelKey,
   href,
   onDelete,
+  onToggleHidden,
 }: {
   row: Row;
   imageKey?: string;
   labelKey: string;
   href: string;
   onDelete: () => void;
+  onToggleHidden: () => void;
 }) {
+  const hidden = row.hidden === true;
   const {
     attributes,
     listeners,
@@ -54,7 +57,7 @@ function SortableRow({
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`flex items-center gap-4 bg-surface p-4 transition-colors hover:bg-surface-2/40 ${
         isDragging ? "relative z-10 opacity-80 shadow-xl shadow-navy/10" : ""
-      }`}
+      } ${hidden ? "opacity-50" : ""}`}
     >
       <span
         {...attributes}
@@ -78,13 +81,27 @@ function SortableRow({
           <div className="size-14 shrink-0 rounded-lg border border-dashed border-line" />
         ))}
       <Link href={href} className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-ink">
+        <p className="flex items-center gap-2 truncate text-sm font-medium text-ink">
           {(row[labelKey] as string) || "(ไม่มีชื่อ)"}
+          {hidden && (
+            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[11px] font-medium text-ink-body">
+              ซ่อนอยู่
+            </span>
+          )}
         </p>
         <p className="text-xs text-ink-body">
           ลำดับ {String(row.sort_order ?? "")}
         </p>
       </Link>
+      <button
+        type="button"
+        onClick={onToggleHidden}
+        aria-label={hidden ? "แสดงบนเว็บ" : "ซ่อนจากเว็บ"}
+        title={hidden ? "แสดงบนเว็บ" : "ซ่อนจากเว็บ"}
+        className="flex size-8 cursor-pointer items-center justify-center rounded-md border border-line text-ink-body shadow-xs transition-colors hover:bg-surface-2"
+      >
+        {hidden ? <FiEyeOff size={14} aria-hidden /> : <FiEye size={14} aria-hidden />}
+      </button>
       <Link
         href={href}
         className="flex h-8 items-center rounded-md border border-line px-3 text-xs font-medium text-ink shadow-xs transition-colors hover:bg-surface-2"
@@ -155,6 +172,25 @@ export default function AdminSection() {
     applyOrder(arrayMove(rows, from, to));
   }
 
+  async function toggleHidden(row: Row) {
+    const next = !(row.hidden === true);
+    setRows((rs) =>
+      rs.map((r) => (r.id === row.id ? { ...r, hidden: next } : r)),
+    );
+    const { error } = await supabase
+      .from(config.table)
+      .update({ hidden: next })
+      .eq("id", row.id as string);
+    if (error) {
+      setStatus(`เปลี่ยนสถานะไม่สำเร็จ: ${error.message}`);
+      load();
+    } else {
+      setStatus(
+        next ? "ซ่อนแล้ว ✓ หายจากเว็บภายใน 1 นาที" : "แสดงแล้ว ✓ กลับมาภายใน 1 นาที",
+      );
+    }
+  }
+
   async function remove(row: Row) {
     setPendingDelete(null);
     const { error } = await supabase
@@ -204,6 +240,7 @@ export default function AdminSection() {
                 labelKey={config.labelKey}
                 href={`/admin/${section}/${row.id}`}
                 onDelete={() => setPendingDelete(row)}
+                onToggleHidden={() => toggleHidden(row)}
               />
             ))}
             {!rows.length && (

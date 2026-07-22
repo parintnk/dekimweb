@@ -5,7 +5,7 @@ import { FaLine } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import PageHeader from "../components/page-header";
 import { LINE_URL, externalLink } from "../contact";
-import { mounjaroRates, serviceRates, type RateRow } from "./rates";
+import { getServicePricing } from "../lib/content";
 
 export const metadata: Metadata = {
   title: "บริการและราคา",
@@ -13,71 +13,14 @@ export const metadata: Metadata = {
     "ราคาทุกบริการของ Dr. KIM Clinic เชียงใหม่ แยกตามยี่ห้อและขนาด — Botox, Filler, Biostimulator, Mesotherapy, IV Drip, เลเซอร์ และ Mounjaro ลดน้ำหนัก",
 };
 
-// ponytail: prices live in rates.ts (shared with the detail pages' sidebar cards)
-type Row = RateRow;
+export default async function ServicesPage() {
+  // ponytail: hidden rows already filtered out in getServicePricing → hiding a service in
+  // admin drops it from this page too. Mounjaro is the weight-management row, rendered as the band.
+  const services = await getServicePricing();
+  const categories = services.filter((s) => s.slug !== "weight-management");
+  const wm = services.find((s) => s.slug === "weight-management");
+  const mounjaro = wm?.mounjaroRates ?? [];
 
-const categories: {
-  id: string;
-  image: string;
-  title: string;
-  subtitle: string;
-  blurb: string;
-  fit: string;
-  rows: Row[];
-}[] = [
-  {
-    id: "botox",
-    image: "/services/botox.jpg",
-    title: "Botox",
-    subtitle: "โบท็อกซ์",
-    blurb: "ลดริ้วรอย ยกกระชับ เรียวหน้า เปิดกล่องผลิตภัณฑ์แท้ให้ดูทุกครั้ง",
-    ...serviceRates.botox,
-  },
-  {
-    id: "filler",
-    image: "/services/filler.jpg",
-    title: "Filler",
-    subtitle: "ฟิลเลอร์",
-    blurb: "เติมร่องลึก เติมวอลลุ่ม ปรับรูปหน้าอย่างเป็นธรรมชาติ",
-    ...serviceRates.filler,
-  },
-  {
-    id: "biostimulator",
-    image: "/services/biostimulator.jpg",
-    title: "Biostimulator",
-    subtitle: "ไบโอสติมูเลเตอร์",
-    blurb: "กระตุ้นคอลลาเจน ฟื้นความแข็งแรงของผิวจากภายใน",
-    ...serviceRates.biostimulator,
-  },
-  {
-    id: "mesotherapy",
-    image: "/services/mesotherapy.jpg",
-    title: "Mesotherapy",
-    subtitle: "เมโสหน้าใส",
-    blurb: "ลดฝ้า ผิวกระจ่างใส ลดไขมันเฉพาะจุด",
-    ...serviceRates.mesotherapy,
-  },
-  {
-    id: "iv-drip",
-    image: "/services/iv-drip.jpg",
-    title: "IV Drip",
-    subtitle: "วิตามินทางหลอดเลือด",
-    blurb: "ฟื้นฟูร่างกาย เพิ่มพลัง ผิวออร่า",
-    ...serviceRates["iv-drip"],
-  },
-  {
-    id: "energy-device",
-    image: "/services/energy-device.jpg",
-    title: "Energy-Based Device",
-    subtitle: "เลเซอร์และเครื่องมือ",
-    blurb: "IPL · CO2 Laser · RF · HIFU ด้วยเครื่องมือที่ได้มาตรฐาน",
-    ...serviceRates["energy-device"],
-  },
-];
-
-const mounjaro = mounjaroRates;
-
-export default function ServicesPage() {
   return (
     <>
       <PageHeader
@@ -92,22 +35,24 @@ export default function ServicesPage() {
           <div className="space-y-16 md:space-y-24">
             {categories.map((c, i) => (
               <article
-                key={c.id}
-                id={c.id}
+                key={c.slug}
+                id={c.slug}
                 className="grid scroll-mt-24 items-center gap-8 lg:grid-cols-2 lg:gap-16"
               >
                 <div
-                  className={`relative aspect-4/3 overflow-hidden rounded-3xl border border-line ${
+                  className={`relative aspect-4/3 overflow-hidden rounded-3xl border border-line bg-surface-2 ${
                     i % 2 === 1 ? "lg:order-2" : ""
                   }`}
                 >
-                  <Image
-                    src={c.image}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover"
-                  />
+                  {c.image && (
+                    <Image
+                      src={c.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                  )}
                   <div className="pointer-events-none absolute inset-0 hidden bg-navy/25 mix-blend-multiply dark:block" />
                 </div>
 
@@ -128,7 +73,7 @@ export default function ServicesPage() {
 
                   <table className="mt-5 w-full text-sm">
                     <tbody>
-                      {c.rows.map((r) => (
+                      {c.rates.map((r) => (
                         <tr key={r.name} className="border-t border-line">
                           <td className="py-3 pr-3">
                             <span className="text-ink">{r.name}</span>
@@ -150,7 +95,7 @@ export default function ServicesPage() {
                   </table>
 
                   <Link
-                    href={`/services/${c.id}`}
+                    href={`/services/${c.slug}`}
                     className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors duration-200 hover:text-accent"
                   >
                     อ่านข้อมูลเพิ่มเติมเกี่ยวกับ {c.title}
@@ -161,7 +106,9 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          {/* ponytail: Mounjaro keeps the navy band treatment — the brief flags it as the priority service */}
+          {/* ponytail: Mounjaro keeps the navy band treatment — the brief flags it as the priority
+              service. Band shows only when the weight-management row is visible (not hidden). */}
+          {wm && (
           <div
             id="mounjaro"
             className="mt-16 scroll-mt-24 overflow-hidden rounded-2xl bg-navy p-6 md:mt-24 md:p-10"
@@ -244,6 +191,7 @@ export default function ServicesPage() {
               <FiArrowRight size={16} aria-hidden />
             </Link>
           </div>
+          )}
 
           <div className="mt-10 text-center">
             <p className="text-xs leading-6 text-ink-body">

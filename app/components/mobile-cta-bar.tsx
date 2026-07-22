@@ -9,7 +9,7 @@ export default function MobileCtaBar() {
       <Link
         href={LINE_URL}
         {...externalLink}
-        className="flex h-13 items-center justify-center rounded-full bg-brand text-sm font-medium text-on-brand shadow-lg shadow-navy/25 transition-transform duration-200 active:scale-[0.98]"
+        className="shimmer-gold flex h-13 items-center justify-center rounded-full text-sm font-semibold text-navy shadow-lg shadow-[#b8912f]/30 transition-transform duration-200 active:scale-[0.98]"
       >
         จองคิวผ่านไลน์
       </Link>

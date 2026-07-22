@@ -65,8 +65,10 @@ export default function ContactFab() {
   }, [open]);
 
   return (
-    // ponytail: bottom-24 on mobile clears the fixed booking bar; the drawer/dialog sit at z-50, so this stays under them
-    <div className="fixed bottom-24 right-4 z-40 flex flex-col items-end gap-3 md:bottom-6 md:right-6">
+    // ponytail: bottom-24 on mobile clears the fixed booking bar; the drawer/dialog sit at z-50, so this stays under them.
+    // pointer-events-none so the tall invisible strip (space reserved for the closed channel links) doesn't eat
+    // taps on buttons behind it — the button + open links opt back in with pointer-events-auto.
+    <div className="pointer-events-none fixed bottom-24 right-4 z-40 flex flex-col items-end gap-3 md:bottom-6 md:right-6">
       {channels.map((c, i) => (
         <Link
           key={c.label}
@@ -84,7 +86,7 @@ export default function ContactFab() {
           }}
           className={`flex items-center gap-3 transition-all duration-200 ${
             open
-              ? "translate-y-0 opacity-100"
+              ? "pointer-events-auto translate-y-0 opacity-100"
               : "pointer-events-none translate-y-3 opacity-0"
           }`}
         >
@@ -105,7 +107,7 @@ export default function ContactFab() {
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-label={open ? "ปิดช่องทางติดต่อ" : "ติดต่อเรา"}
-        className="flex size-14 cursor-pointer items-center justify-center rounded-full bg-gold text-navy shadow-xl shadow-navy/25 transition-transform duration-200 hover:scale-105 active:scale-95"
+        className="pointer-events-auto flex size-14 cursor-pointer items-center justify-center rounded-full bg-gold text-navy shadow-xl shadow-navy/25 transition-transform duration-200 hover:scale-105 active:scale-95"
       >
         {open ? (
           <FiX size={24} aria-hidden />

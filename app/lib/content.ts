@@ -2,6 +2,7 @@ import type { Article, Block } from "../blog/articles";
 import { articles as staticArticles } from "../blog/articles";
 import type { ServiceDetail } from "../services/details";
 import { serviceDetails as staticDetails } from "../services/details";
+import type { MounjaroRate, RateRow } from "../services/rates";
 import {
   galleryPhotos as staticGallery,
   promotions as staticPromotions,
@@ -34,6 +35,9 @@ type ServiceRow = {
   body_html: string;
   related_label: string | null;
   related_href: string | null;
+  fit: string;
+  rates: RateRow[];
+  mounjaro_rates: MounjaroRate[];
 };
 
 // ponytail: one shared 60s cache keyed by table name — dedupes repeat queries within a
@@ -45,6 +49,7 @@ const cachedRows = unstable_cache(
       const { data, error } = await supabase
         .from(table)
         .select("*")
+        .eq("hidden", false)
         .order("sort_order", { ascending: true });
       if (error || !data?.length) return [];
       return data;
@@ -92,6 +97,47 @@ export async function getServiceDetails(): Promise<ServiceDetail[]> {
       r.related_label && r.related_href
         ? { label: r.related_label, href: r.related_href }
         : undefined,
+    fit: r.fit || undefined,
+    rates: r.rates?.length ? r.rates : undefined,
+    mounjaroRates: r.mounjaro_rates?.length ? r.mounjaro_rates : undefined,
+  }));
+}
+
+export type ServicePricing = {
+  slug: string;
+  title: string;
+  subtitle: string;
+  blurb: string;
+  image?: string;
+  fit: string;
+  rates: RateRow[];
+  mounjaroRates: MounjaroRate[];
+};
+
+// ponytail: the /services listing (zigzag cards + Mounjaro band) — same 60s-cached rows as the
+// getters above, so no extra query. Reuses the card image_url (4:3) and card_detail as the blurb.
+export async function getServicePricing(): Promise<ServicePricing[]> {
+  const data = await rows<ServiceRow>("services");
+  if (data.length)
+    return data.map((r) => ({
+      slug: r.slug,
+      title: r.title,
+      subtitle: r.subtitle,
+      blurb: r.card_detail,
+      image: r.image_url || undefined,
+      fit: r.fit,
+      rates: r.rates ?? [],
+      mounjaroRates: r.mounjaro_rates ?? [],
+    }));
+  return staticDetails.map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    subtitle: d.subtitle,
+    blurb: "",
+    image: d.image,
+    fit: d.fit ?? "",
+    rates: d.rates ?? [],
+    mounjaroRates: d.mounjaroRates ?? [],
   }));
 }
 

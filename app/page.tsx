@@ -42,7 +42,8 @@ export default async function Home() {
     <>
       <HeroMobile />
 
-      {/* ponytail: desktop first screen = hero + trust strip in one viewport. 4.5rem = navbar height. */}
+      {/* ponytail: desktop hero fills the first viewport. 4.5rem = navbar height. Trust strip
+          moved down under the Google reviews. */}
       <div className="md:flex md:h-[calc(100svh-4.5rem)] md:flex-col">
         <section className="relative hidden overflow-hidden bg-surface-2 md:flex md:min-h-0 md:flex-1">
           <Image
@@ -65,13 +66,12 @@ export default async function Home() {
                 เพราะความสวยคือความมั่นใจ
               </p>
               <h1 className="enter-2 font-display text-4xl leading-[1.15] tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                เผยผิวสวย
+                Your beauty
                 <br />
-                มั่นใจในแบบคุณ
+                is our duty
               </h1>
               <p className="enter-3 mt-6 max-w-md text-base leading-8 text-ink-body">
-                ดูแลโดยแพทย์ผู้เชี่ยวชาญ ด้วยเทคโนโลยีที่ทันสมัย
-                ได้ผลลัพธ์ที่เป็นธรรมชาติ
+                เพราะความสวย ความดูดี คือหน้าที่ของเรา
               </p>
               <div className="enter-4 mt-9 flex flex-wrap gap-4">
                 <Link
@@ -91,32 +91,9 @@ export default async function Home() {
             </div>
           </div>
         </section>
-
-        <section
-          aria-label="จุดเด่นของคลินิก"
-          className="border-b border-line bg-surface md:shrink-0"
-        >
-          <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-10 px-6 py-12 sm:grid-cols-2 md:py-8 lg:grid-cols-4 lg:divide-x lg:divide-line">
-            {trust.map(({ icon: Icon, title, detail }) => (
-              <div
-                key={title}
-                className="reveal flex items-start gap-4 lg:px-6 lg:first:pl-0 lg:last:pr-0"
-              >
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-surface-2 text-accent">
-                  <Icon size={22} aria-hidden />
-                </span>
-                <div>
-                  <p className="font-medium text-ink">{title}</p>
-                  <p className="mt-0.5 text-sm leading-6 text-ink-body">
-                    {detail}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
       </div>
 
+      <Promotions items={promos} />
       <Services />
       <Results />
       <Doctor />
@@ -159,7 +136,30 @@ export default async function Home() {
       </section>
 
       <Reviews />
-      <Promotions items={promos} />
+
+      <section
+        aria-label="จุดเด่นของคลินิก"
+        className="border-t border-line bg-surface"
+      >
+        <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-line">
+          {trust.map(({ icon: Icon, title, detail }) => (
+            <div
+              key={title}
+              className="reveal flex items-start gap-4 lg:px-6 lg:first:pl-0 lg:last:pr-0"
+            >
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-surface-2 text-accent">
+                <Icon size={22} aria-hidden />
+              </span>
+              <div>
+                <p className="font-medium text-ink">{title}</p>
+                <p className="mt-0.5 text-sm leading-6 text-ink-body">
+                  {detail}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </>
   );
 }

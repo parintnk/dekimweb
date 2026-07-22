@@ -24,7 +24,7 @@ const sarabun = Sarabun({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Dr. KIM Clinic เชียงใหม่ — เผยผิวสวย มั่นใจในแบบคุณ",
+    default: "Dr. KIM Clinic เชียงใหม่ — Your beauty is our duty",
     template: "%s | Dr. KIM Clinic เชียงใหม่",
   },
   description:
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "th_TH",
     siteName: "Dr. KIM Clinic",
-    title: "Dr. KIM Clinic เชียงใหม่ — เผยผิวสวย มั่นใจในแบบคุณ",
+    title: "Dr. KIM Clinic เชียงใหม่ — Your beauty is our duty",
     description:
       "คลินิกเวชกรรมความงามในเชียงใหม่ ดูแลโดยแพทย์ทุกเคส เปิดทุกวัน 11.00–20.00 น.",
     images: [{ url: "/clinic/storefront.jpg", width: 1536, height: 1024 }],

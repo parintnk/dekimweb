@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiArrowLeft, FiSave, FiTrash2 } from "react-icons/fi";
+import { FiArrowLeft, FiPlus, FiSave, FiTrash2, FiX } from "react-icons/fi";
 import { supabase } from "../../../lib/supabase";
 import { blocksToHtml } from "../../blocks-doc";
 import ConfirmDialog from "../../confirm-dialog";
@@ -18,6 +18,86 @@ const inputCls =
 
 // main content edits on the left; images, meta and actions live in the right rail
 const SIDE_TYPES = new Set(["image", "number", "tags", "article"]);
+
+type Col = { key: string; label: string; wide?: boolean };
+const RATE_COLS: Col[] = [
+  { key: "name", label: "ชื่อรายการ", wide: true },
+  { key: "note", label: "หมายเหตุ (ไม่บังคับ)", wide: true },
+  { key: "unit", label: "หน่วย" },
+  { key: "price", label: "ราคา" },
+];
+const MRATE_COLS: Col[] = [
+  { key: "dose", label: "ขนาดยา" },
+  { key: "once", label: "1 ครั้ง" },
+  { key: "four", label: "แพ็ก 4 ครั้ง" },
+  { key: "pen", label: "เหมา 1 ด้าม" },
+];
+
+// ponytail: one repeatable-rows editor for both price tables — columns differ, layout is the same.
+// No drag reorder; add/delete + edit only. Add reorder if the clinic asks.
+function RowsField({
+  value,
+  columns,
+  onChange,
+}: {
+  value: Record<string, string>[];
+  columns: Col[];
+  onChange: (v: Record<string, string>[]) => void;
+}) {
+  const rows = value ?? [];
+  const update = (i: number, key: string, v: string) =>
+    onChange(rows.map((r, ri) => (ri === i ? { ...r, [key]: v } : r)));
+  const add = () =>
+    onChange([...rows, Object.fromEntries(columns.map((c) => [c.key, ""]))]);
+  const remove = (i: number) => onChange(rows.filter((_, ri) => ri !== i));
+
+  return (
+    <div className="space-y-3">
+      {rows.map((r, i) => (
+        <div
+          key={i}
+          className="relative rounded-lg border border-line bg-surface-2/40 p-3"
+        >
+          <button
+            type="button"
+            onClick={() => remove(i)}
+            aria-label="ลบแถว"
+            className="absolute right-2 top-2 flex size-6 cursor-pointer items-center justify-center rounded text-ink-body transition-colors hover:bg-red-500/10 hover:text-red-500"
+          >
+            <FiX size={14} aria-hidden />
+          </button>
+          <div className="grid grid-cols-2 gap-2 pr-6">
+            {columns.map((c) => (
+              <label
+                key={c.key}
+                className={`block text-xs ${c.wide ? "col-span-2" : ""}`}
+              >
+                <span className="text-ink-body">{c.label}</span>
+                <input
+                  type="text"
+                  value={r[c.key] ?? ""}
+                  onChange={(e) => update(i, c.key, e.target.value)}
+                  className={`${inputCls} mt-1`}
+                />
+              </label>
+            ))}
+          </div>
+        </div>
+      ))}
+      {!rows.length && (
+        <p className="text-xs text-ink-body">ยังไม่มีรายการ</p>
+      )}
+      <button
+        type="button"
+        onClick={add}
+        className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border border-line px-3 text-xs font-medium text-ink shadow-xs transition-colors hover:bg-surface-2"
+      >
+        <FiPlus size={13} aria-hidden />
+        เพิ่มแถว
+      </button>
+    </div>
+  );
+}
 
 export default function AdminRecordPage() {
   const { section, id } = useParams<{ section: string; id: string }>();
@@ -46,6 +126,8 @@ export default function AdminRecordPage() {
             if (f.type === "number") blank[f.key] = count ?? 0;
             else if (f.type === "tags") blank[f.key] = [];
             else if (f.type === "blocks") blank[f.key] = [];
+            else if (f.type === "rates" || f.type === "mrates")
+              blank[f.key] = [];
             else if (f.type === "article") blank[f.key] = null;
             else blank[f.key] = "";
           }
@@ -171,6 +253,15 @@ export default function AdminRecordPage() {
             ))}
           </select>
         );
+      case "rates":
+      case "mrates":
+        return (
+          <RowsField
+            value={(value as Record<string, string>[]) ?? []}
+            columns={f.type === "mrates" ? MRATE_COLS : RATE_COLS}
+            onChange={set}
+          />
+        );
       case "textarea":
         return (
           <textarea
@@ -256,8 +347,12 @@ export default function AdminRecordPage() {
           : null
       : null;
 
-  const mainFields = config.fields.filter((f) => !SIDE_TYPES.has(f.type));
-  const sideFields = config.fields.filter((f) => SIDE_TYPES.has(f.type));
+  // Mounjaro table only on the weight-management record; other onlySlug fields likewise
+  const visibleFields = config.fields.filter(
+    (f) => !f.onlySlug || row?.slug === f.onlySlug,
+  );
+  const mainFields = visibleFields.filter((f) => !SIDE_TYPES.has(f.type));
+  const sideFields = visibleFields.filter((f) => SIDE_TYPES.has(f.type));
   const imageFields = sideFields.filter((f) => f.type === "image");
   const metaFields = sideFields.filter((f) => f.type !== "image");
 

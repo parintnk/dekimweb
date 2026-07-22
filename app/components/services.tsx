@@ -38,7 +38,7 @@ export default async function Services() {
             ({ image, slug, title, subtitle, detail, brands, from, unit }) => (
               <li key={title} className="reveal">
                 <Link
-                  href={`/services#${slug}`}
+                  href={`/services/${slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/5"
                 >
                   <div className="relative aspect-4/3 overflow-hidden bg-surface-2">
@@ -123,6 +123,13 @@ export default async function Services() {
                 ดูแลโดยแพทย์ ปรับขนาดยาให้เหมาะกับแต่ละคน ตั้งแต่ 2.5 – 10 mg.
                 แพ็กเกจ 4 ครั้ง ฟรีค่าฉีด
               </p>
+              <Link
+                href="/services/weight-management"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gold transition-opacity duration-200 hover:opacity-80"
+              >
+                อ่านเพิ่มเติม
+                <FiArrowRight size={16} aria-hidden />
+              </Link>
             </div>
 
             <div className="flex shrink-0 flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">

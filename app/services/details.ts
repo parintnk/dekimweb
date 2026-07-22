@@ -1,4 +1,10 @@
 import type { Block } from "../blog/articles";
+import {
+  mounjaroRates,
+  serviceRates,
+  type MounjaroRate,
+  type RateRow,
+} from "./rates";
 
 // ponytail: transcribed from the clinic's own Google Site service pages
 // (sites.google.com/view/dr-kim-clinic-cnx/หน้าแรก/บริการ/*, fetched 2026-07-18) —
@@ -13,9 +19,14 @@ export type ServiceDetail = {
   blocks: Block[];
   html?: string; // editor-authored HTML body — wins over blocks when present
   related?: { label: string; href: string };
+  fit?: string; // "เหมาะสำหรับ" line on /services
+  rates?: RateRow[]; // price rows shown on /services + detail sidebar
+  mounjaroRates?: MounjaroRate[]; // weight-management only — the navy band table
 };
 
-export const serviceDetails: ServiceDetail[] = [
+// ponytail: DB rows override these at runtime (see content.ts); the static price data lives in
+// rates.ts, folded in here so the fallback still shows prices if Supabase is unreachable.
+const rawServiceDetails: ServiceDetail[] = [
   {
     slug: "botox",
     title: "Botox",
@@ -358,3 +369,10 @@ export const serviceDetails: ServiceDetail[] = [
     ],
   },
 ];
+
+export const serviceDetails: ServiceDetail[] = rawServiceDetails.map((d) => ({
+  ...d,
+  fit: serviceRates[d.slug]?.fit,
+  rates: serviceRates[d.slug]?.rows,
+  mounjaroRates: d.slug === "weight-management" ? mounjaroRates : undefined,
+}));
