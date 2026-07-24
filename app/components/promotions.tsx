@@ -56,9 +56,9 @@ export default function Promotions({ items }: { items: Promotion[] }) {
                 type="button"
                 onClick={() => open(p)}
                 aria-label={`ดูรูปใหญ่: ${p.alt.slice(0, 40)}…`}
-                // ponytail: object-contain on a navy plate — the posters are 1:1 and 4:5 mixed, and
-                // cover would slice their prices off. The navy matches their own background.
-                className="group relative block w-full cursor-pointer overflow-hidden rounded-2xl border border-line bg-navy transition-all duration-200 hover:-translate-y-1 hover:border-gold/40 hover:shadow-xl hover:shadow-navy/10"
+                // ponytail: object-contain, no plate — posters are 1:1 and 4:5 mixed and cover
+                // would slice their prices off; non-square ones just show the section behind them.
+                className="group relative block w-full cursor-pointer overflow-hidden rounded-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-navy/10"
               >
                 <span className="relative block aspect-square">
                   <Image
