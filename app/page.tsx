@@ -63,12 +63,12 @@ export default async function Home() {
             <div>
               <p className="enter mb-5 flex items-center gap-3 text-sm font-medium tracking-wide text-accent">
                 <span className="h-px w-8 bg-gold" aria-hidden />
-                เพราะความสวยคือความมั่นใจ
+                ที่ Dr. KIM CLINIC
               </p>
               <h1 className="enter-2 font-display text-4xl leading-[1.15] tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                Your beauty
+                <span className="text-gold">“</span>Your beauty
                 <br />
-                is our duty
+                is our duty<span className="text-gold">”</span>
               </h1>
               <p className="enter-3 mt-6 max-w-md text-base leading-8 text-ink-body">
                 เพราะความสวย ความดูดี คือหน้าที่ของเรา

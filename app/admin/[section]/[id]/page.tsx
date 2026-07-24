@@ -1,9 +1,31 @@
 "use client";
 
+import {
+  DndContext,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiArrowLeft, FiPlus, FiSave, FiTrash2, FiX } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiMenu,
+  FiPlus,
+  FiSave,
+  FiTrash2,
+  FiX,
+} from "react-icons/fi";
 import { supabase } from "../../../lib/supabase";
 import { blocksToHtml } from "../../blocks-doc";
 import ConfirmDialog from "../../confirm-dialog";
@@ -33,8 +55,76 @@ const MRATE_COLS: Col[] = [
   { key: "pen", label: "เหมา 1 ด้าม" },
 ];
 
+// one draggable row — index doubles as the dnd id (rows have no stable id; the list is small
+// and only reorders on drop, so index ids are stable for the duration of a drag)
+function SortableRateRow({
+  id,
+  row,
+  columns,
+  onField,
+  onRemove,
+}: {
+  id: string;
+  row: Record<string, string>;
+  columns: Col[];
+  onField: (key: string, v: string) => void;
+  onRemove: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={`flex gap-2 rounded-lg border border-line bg-surface-2/40 p-3 ${
+        isDragging ? "relative z-10 shadow-lg shadow-navy/10" : ""
+      }`}
+    >
+      <span
+        {...attributes}
+        {...listeners}
+        title="ลากเพื่อจัดลำดับ"
+        className="mt-1 cursor-grab touch-none text-ink-body/60 outline-none active:cursor-grabbing"
+      >
+        <FiMenu size={15} aria-hidden />
+      </span>
+      <div className="grid flex-1 grid-cols-2 gap-2">
+        {columns.map((c) => (
+          <label
+            key={c.key}
+            className={`block text-xs ${c.wide ? "col-span-2" : ""}`}
+          >
+            <span className="text-ink-body">{c.label}</span>
+            <input
+              type="text"
+              value={row[c.key] ?? ""}
+              onChange={(e) => onField(c.key, e.target.value)}
+              className={`${inputCls} mt-1`}
+            />
+          </label>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={onRemove}
+        aria-label="ลบแถว"
+        className="mt-1 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-ink-body transition-colors hover:bg-red-500/10 hover:text-red-500"
+      >
+        <FiX size={14} aria-hidden />
+      </button>
+    </div>
+  );
+}
+
 // ponytail: one repeatable-rows editor for both price tables — columns differ, layout is the same.
-// No drag reorder; add/delete + edit only. Add reorder if the clinic asks.
+// Drag the handle to reorder; add/delete/edit otherwise.
 function RowsField({
   value,
   columns,
@@ -45,45 +135,44 @@ function RowsField({
   onChange: (v: Record<string, string>[]) => void;
 }) {
   const rows = value ?? [];
+  const sensors = useSensors(useSensor(PointerSensor));
   const update = (i: number, key: string, v: string) =>
     onChange(rows.map((r, ri) => (ri === i ? { ...r, [key]: v } : r)));
   const add = () =>
     onChange([...rows, Object.fromEntries(columns.map((c) => [c.key, ""]))]);
   const remove = (i: number) => onChange(rows.filter((_, ri) => ri !== i));
 
+  function handleDragEnd(e: DragEndEvent) {
+    const { active, over } = e;
+    if (!over || active.id === over.id) return;
+    onChange(arrayMove(rows, Number(active.id), Number(over.id)));
+  }
+
   return (
     <div className="space-y-3">
-      {rows.map((r, i) => (
-        <div
-          key={i}
-          className="relative rounded-lg border border-line bg-surface-2/40 p-3"
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={rows.map((_, i) => String(i))}
+          strategy={verticalListSortingStrategy}
         >
-          <button
-            type="button"
-            onClick={() => remove(i)}
-            aria-label="ลบแถว"
-            className="absolute right-2 top-2 flex size-6 cursor-pointer items-center justify-center rounded text-ink-body transition-colors hover:bg-red-500/10 hover:text-red-500"
-          >
-            <FiX size={14} aria-hidden />
-          </button>
-          <div className="grid grid-cols-2 gap-2 pr-6">
-            {columns.map((c) => (
-              <label
-                key={c.key}
-                className={`block text-xs ${c.wide ? "col-span-2" : ""}`}
-              >
-                <span className="text-ink-body">{c.label}</span>
-                <input
-                  type="text"
-                  value={r[c.key] ?? ""}
-                  onChange={(e) => update(i, c.key, e.target.value)}
-                  className={`${inputCls} mt-1`}
-                />
-              </label>
+          <div className="space-y-3">
+            {rows.map((r, i) => (
+              <SortableRateRow
+                key={i}
+                id={String(i)}
+                row={r}
+                columns={columns}
+                onField={(key, v) => update(i, key, v)}
+                onRemove={() => remove(i)}
+              />
             ))}
           </div>
-        </div>
-      ))}
+        </SortableContext>
+      </DndContext>
       {!rows.length && (
         <p className="text-xs text-ink-body">ยังไม่มีรายการ</p>
       )}

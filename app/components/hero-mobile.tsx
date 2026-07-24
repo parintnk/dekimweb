@@ -25,13 +25,13 @@ export default function HeroMobile() {
       <div className="relative px-6 pb-28">
         <p className="enter flex items-center gap-2.5 text-xs font-medium tracking-[0.15em] text-gold">
           <span className="h-px w-6 bg-gold" aria-hidden />
-          เพราะความสวยคือความมั่นใจ
+          ที่ Dr. KIM CLINIC
         </p>
 
         <h1 className="enter-2 mt-4 font-display text-[2.7rem] leading-[1.12] tracking-tight text-white">
-          Your beauty
+          <span className="text-gold">“</span>Your beauty
           <br />
-          is our duty
+          is our duty<span className="text-gold">”</span>
         </h1>
 
         <p className="enter-3 mt-4 max-w-[18rem] text-sm leading-7 text-white/75">
