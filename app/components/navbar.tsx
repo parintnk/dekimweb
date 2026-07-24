@@ -25,13 +25,22 @@ function Logo() {
       className="block"
       aria-label="Dr. KIM Clinic หน้าแรก"
     >
+      {/* navy text for light mode, white text for dark mode (the star is gold in both) */}
+      <Image
+        src="/Ci DR KIM navy.png"
+        alt="Dr. KIM Clinic"
+        width={512}
+        height={512}
+        priority
+        className="h-16 w-auto py-2 sm:h-18 dark:hidden"
+      />
       <Image
         src="/Ci DR KIM 01.png"
         alt="Dr. KIM Clinic"
         width={512}
         height={512}
         priority
-        className="h-16 w-auto sm:h-18 sm:w-auto py-2"
+        className="hidden h-16 w-auto py-2 sm:h-18 dark:block"
       />
     </Link>
   );
