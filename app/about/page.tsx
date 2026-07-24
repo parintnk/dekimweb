@@ -13,6 +13,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import Doctor from "../components/doctor";
+import GalleryLightbox from "../components/gallery-lightbox";
 import Team from "../components/team";
 import PageHeader from "../components/page-header";
 import { getGallery } from "../lib/content";
@@ -98,6 +99,22 @@ export default async function AboutPage() {
         title="About Dr. KIM Clinic"
         description="คลินิกเวชกรรมด้านความงามในจังหวัดเชียงใหม่ ดูแลทุกเคสโดยแพทย์ เลือกใช้ผลิตภัณฑ์ของแท้และเครื่องมือที่ได้มาตรฐาน เปิดให้บริการทุกวัน 11.00 – 20.00 น."
       />
+
+      <section className="bg-surface">
+        <div className="mx-auto max-w-7xl px-6 py-6 md:py-8">
+          <div className="relative aspect-16/9 overflow-hidden rounded-3xl border border-line shadow-xs">
+            <Image
+              src="/S__25640985.jpg_2K_202607241410.jpeg"
+              alt="ทีมและบรรยากาศ Dr. KIM Clinic"
+              fill
+              priority
+              sizes="(min-width: 1280px) 80rem, 100vw"
+              className="object-cover"
+            />
+            <div className="pointer-events-none absolute inset-0 hidden bg-navy/20 mix-blend-multiply dark:block" />
+          </div>
+        </div>
+      </section>
 
       <section
         aria-label="ตัวเลขของคลินิก"
@@ -186,23 +203,7 @@ export default async function AboutPage() {
             บรรยากาศคลินิก
           </h2>
 
-          <div className="mt-10 columns-2 gap-5 lg:columns-3">
-            {gallery.map((g) => (
-              <div
-                key={g.src}
-                className="mb-5 break-inside-avoid overflow-hidden rounded-2xl border border-line"
-              >
-                <Image
-                  src={g.src}
-                  alt={g.alt}
-                  width={g.w}
-                  height={g.h}
-                  sizes="(min-width: 1024px) 33vw, 50vw"
-                  className="w-full transition-transform duration-300 hover:scale-[1.03]"
-                />
-              </div>
-            ))}
-          </div>
+          <GalleryLightbox photos={gallery} />
 
           <div className="mt-10 flex flex-wrap items-center gap-4 rounded-2xl bg-navy p-6 md:p-8">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/10 text-gold">
