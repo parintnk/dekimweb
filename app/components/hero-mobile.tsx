@@ -10,12 +10,13 @@ export default function HeroMobile() {
   return (
     <section className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-navy md:hidden">
       <Image
-        src="/hero-portrait.jpg"
+        src="/hero1.jpeg"
         alt=""
         fill
         priority
-        sizes="100vw"
-        className="object-cover object-center"
+        quality={90}
+        sizes="400vw"
+        className="-translate-y-[12%] object-cover object-[90%_30%]"
       />
       <div className="pointer-events-none absolute inset-0 hidden bg-navy/25 mix-blend-multiply dark:block" />
 

@@ -47,7 +47,7 @@ export default async function Home() {
       <div className="md:flex md:h-[calc(100svh-4.5rem)] md:flex-col">
         <section className="relative hidden overflow-hidden bg-surface-2 md:flex md:min-h-0 md:flex-1">
           <Image
-            src="/hero.jpg"
+            src="/hero1.jpeg"
             alt=""
             fill
             priority
@@ -57,7 +57,7 @@ export default async function Home() {
           {/* ponytail: photos have baked-in cream backgrounds — on a dark page they glare.
                 A multiply tint pulls them toward the surface without killing her skin. */}
           <div className="pointer-events-none absolute inset-0 hidden bg-navy/25 mix-blend-multiply dark:block" />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-2 via-surface-2/45 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-surface-2/85 via-surface-2/20 to-transparent" />
 
           <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-6 py-12 md:grid-cols-2">
             <div>
