@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
+  FiBarChart2,
   FiChevronRight,
   FiExternalLink,
   FiHome,
@@ -99,6 +100,7 @@ export default function AdminShell({
 
         <nav className="flex-1 overflow-y-auto p-3">
           {navItem("/admin", "ภาพรวม", FiHome)}
+          {navItem("/admin/stats", "สถิติ", FiBarChart2)}
           <p className="px-2.5 pb-1.5 pt-5 text-[0.65rem] font-semibold uppercase tracking-widest text-ink-body/50">
             จัดการเนื้อหา
           </p>
@@ -165,6 +167,7 @@ export default function AdminShell({
         <div className="flex gap-1.5 overflow-x-auto border-b border-line bg-surface px-3 py-2 md:hidden">
           {[
             ["/admin", "ภาพรวม"],
+            ["/admin/stats", "สถิติ"],
             ...Object.entries(sections).map(([key, s]) => [
               `/admin/${key}`,
               s.title,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Sarabun } from "next/font/google";
 import "./globals.css";
+import Analytics from "./components/analytics";
 import ContactFab from "./components/contact-fab";
 import Footer from "./components/footer";
 import GoogleTranslate from "./components/google-translate";
@@ -112,6 +113,7 @@ export default function RootLayout({
           <GoogleTranslate />
         </HideOnAdmin>
         <GsapEffects />
+        <Analytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
