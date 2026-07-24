@@ -39,10 +39,10 @@ export default function Doctor() {
                 <FiAward size={20} aria-hidden />
               </span>
               <div>
-                <p className="text-xs text-ink-body">
-                  เลขที่ใบอนุญาตสถานพยาบาล
+                <p className="font-medium text-ink">
+                  นพ. พงศ์พันธ์ ศิรินภาพันธ์
                 </p>
-                <p className="font-medium tabular-nums text-ink">50101009062</p>
+                <p className="text-xs tabular-nums text-ink-body">ว. 49913</p>
               </div>
             </div>
           </div>

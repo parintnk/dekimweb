@@ -54,23 +54,22 @@ export default function MobileMenu({ links }: { links: MenuLink[] }) {
         }`}
       >
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
-          <span className="flex items-center gap-2.5">
+          {/* navy logo for light mode, white for dark (star stays gold) */}
+          <span className="flex items-center">
             <Image
-              src="/logo.png"
-              alt=""
+              src="/Ci DR KIM navy.png"
+              alt="Dr. KIM Clinic"
               width={512}
               height={512}
-              className="h-8 w-8 shrink-0"
+              className="h-9 w-auto dark:hidden"
             />
-            <span className="leading-none">
-              <span className="font-display text-xl tracking-wide text-ink">
-                Dr. <span className="font-bold">KIM</span>
-              </span>
-              <span className="mt-1 flex items-center gap-2 text-[0.55rem] tracking-[0.35em] text-accent">
-                <span className="h-px w-4 bg-gold" aria-hidden />
-                CLINIC
-              </span>
-            </span>
+            <Image
+              src="/Ci DR KIM 01.png"
+              alt="Dr. KIM Clinic"
+              width={512}
+              height={512}
+              className="hidden h-9 w-auto dark:block"
+            />
           </span>
 
           <button

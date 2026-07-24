@@ -47,7 +47,7 @@ export default async function Home() {
       <div className="md:flex md:h-[calc(100svh-4.5rem)] md:flex-col">
         <section className="relative hidden overflow-hidden bg-surface-2 md:flex md:min-h-0 md:flex-1">
           <Image
-            src="/hero1.jpeg"
+            src="/hero1.png"
             alt=""
             fill
             priority
