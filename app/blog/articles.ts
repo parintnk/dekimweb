@@ -20,6 +20,7 @@ export type Article = {
   imageNote?: string; // what shot to ask the clinic for, when there is no image yet
   blocks: Block[];
   html?: string; // editor-authored HTML body — wins over blocks when present
+  updatedAt?: string;
 };
 
 export const articles: Article[] = [

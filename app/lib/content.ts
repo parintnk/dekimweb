@@ -38,6 +38,8 @@ type ServiceRow = {
   fit: string;
   rates: RateRow[];
   mounjaro_rates: MounjaroRate[];
+  updated_at?: string;
+  created_at?: string;
 };
 
 // ponytail: one shared 60s cache keyed by table name — dedupes repeat queries within a
@@ -100,6 +102,7 @@ export async function getServiceDetails(): Promise<ServiceDetail[]> {
     fit: r.fit || undefined,
     rates: r.rates?.length ? r.rates : undefined,
     mounjaroRates: r.mounjaro_rates?.length ? r.mounjaro_rates : undefined,
+    updatedAt: r.updated_at ?? r.created_at,
   }));
 }
 
@@ -172,6 +175,8 @@ export async function getArticles(): Promise<Article[]> {
     image_pos: string;
     blocks: Block[];
     body_html: string;
+    updated_at?: string;
+    created_at?: string;
   }>("articles");
   if (!data.length) return staticArticles;
   return data.map((r) => ({
@@ -183,6 +188,7 @@ export async function getArticles(): Promise<Article[]> {
     imagePos: r.image_pos || undefined,
     blocks: r.blocks,
     html: r.body_html || undefined,
+    updatedAt: r.updated_at ?? r.created_at,
   }));
 }
 

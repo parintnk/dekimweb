@@ -22,6 +22,7 @@ export type ServiceDetail = {
   fit?: string; // "เหมาะสำหรับ" line on /services
   rates?: RateRow[]; // price rows shown on /services + detail sidebar
   mounjaroRates?: MounjaroRate[]; // weight-management only — the navy band table
+  updatedAt?: string;
 };
 
 // ponytail: DB rows override these at runtime (see content.ts); the static price data lives in
