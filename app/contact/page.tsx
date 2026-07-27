@@ -143,7 +143,7 @@ export default function ContactPage() {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover"
               />
-              <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">
+              <p className="absolute inset-x-0 bottom-0 bg-linear-to-t from-navy/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">
                 มองหาตึกนี้ได้เลย — ป้าย Dr. KIM CLINIC ริมถนนรัตนโกสินทร์
               </p>
             </div>
