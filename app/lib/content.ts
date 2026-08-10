@@ -84,7 +84,9 @@ export async function getServiceCards(): Promise<ServiceCard[]> {
 }
 
 export async function getServiceDetails(): Promise<ServiceDetail[]> {
-  const data = await rows<ServiceRow>("services");
+  // ponytail: no slug = half-filled admin record — it would render a blank card and a dead
+  // /services/ URL in the sitemap
+  const data = (await rows<ServiceRow>("services")).filter((r) => r.slug);
   if (!data.length) return staticDetails;
   return data.map((r) => ({
     slug: r.slug,
@@ -120,7 +122,7 @@ export type ServicePricing = {
 // ponytail: the /services listing (zigzag cards + Mounjaro band) — same 60s-cached rows as the
 // getters above, so no extra query. Reuses the card image_url (4:3) and card_detail as the blurb.
 export async function getServicePricing(): Promise<ServicePricing[]> {
-  const data = await rows<ServiceRow>("services");
+  const data = (await rows<ServiceRow>("services")).filter((r) => r.slug);
   if (data.length)
     return data.map((r) => ({
       slug: r.slug,
