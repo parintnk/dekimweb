@@ -256,6 +256,15 @@ export default function AdminRecordPage() {
 
   async function save() {
     if (!row) return;
+    // ponytail: a slug-less row saves fine but is invisible everywhere (getServiceDetails /
+    // getServicePricing drop it) — and a 2nd blank slug hits the UNIQUE constraint. Block it here.
+    if (
+      config.fields.some((f) => f.key === "slug") &&
+      !String(row.slug ?? "").trim()
+    ) {
+      setStatus("ต้องกรอก Slug (URL) ก่อนบันทึก");
+      return;
+    }
     setBusy(true);
     setStatus("กำลังบันทึก…");
     if (isNew) {
