@@ -25,7 +25,8 @@ const sarabun = Sarabun({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Dr. KIM Clinic เชียงใหม่ — Your beauty is our duty",
+    default:
+      "คลินิกความงาม เชียงใหม่ ฟิลเลอร์ โบท็อกซ์ Mounjaro ดูแลโดยแพทย์ | Dr. KIM Clinic",
     template: "%s | Dr. KIM Clinic เชียงใหม่",
   },
   description:
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "th_TH",
     siteName: "Dr. KIM Clinic",
-    title: "Dr. KIM Clinic เชียงใหม่ — Your beauty is our duty",
+    title: "Dr. KIM Clinic เชียงใหม่ — คลินิกความงาม ดูแลโดยแพทย์",
     description:
       "คลินิกเวชกรรมความงามในเชียงใหม่ ดูแลโดยแพทย์ทุกเคส เปิดทุกวัน 11.00–20.00 น.",
     images: [{ url: "/clinic/storefront.jpg", width: 1536, height: 1024 }],
@@ -52,6 +53,22 @@ const clinicJsonLd = {
   url: SITE_URL,
   image: `${SITE_URL}/clinic/storefront.jpg`,
   telephone: "+66-84-609-2027",
+  // ponytail: tells Google this is an aesthetic clinic, not general practice — it was
+  // showing up for "คลินิกหูคอจมูก / คลินิกใกล้ฉัน" instead of filler/botox/Mounjaro queries
+  medicalSpecialty: ["Dermatology", "PlasticSurgery"],
+  areaServed: { "@type": "City", name: "เชียงใหม่" },
+  availableService: [
+    { "@type": "MedicalProcedure", name: "ฉีดโบท็อกซ์ (Botox)" },
+    { "@type": "MedicalProcedure", name: "ฉีดฟิลเลอร์ (Filler)" },
+    { "@type": "MedicalProcedure", name: "Biostimulator กระตุ้นคอลลาเจน" },
+    { "@type": "MedicalProcedure", name: "Mesotherapy เมโสหน้าใส" },
+    {
+      "@type": "MedicalProcedure",
+      name: "โปรแกรมลดน้ำหนัก Mounjaro (Tirzepatide)",
+    },
+    { "@type": "MedicalProcedure", name: "HIFU / RF ยกกระชับหน้า" },
+    { "@type": "MedicalProcedure", name: "IV Drip วิตามินทางหลอดเลือด" },
+  ],
   address: {
     "@type": "PostalAddress",
     streetAddress: "72/1 ถ.รัตนโกสินทร์ ต.วัดเกต",

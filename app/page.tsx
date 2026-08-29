@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FiArrowRight, FiHeart, FiShield, FiUser, FiZap } from "react-icons/fi";
 import Doctor from "./components/doctor";
 import HeroMobile from "./components/hero-mobile";
+import LatestArticles from "./components/latest-articles";
 import Promotions from "./components/promotions";
 import Results from "./components/results";
 import Reviews from "./components/reviews";
@@ -136,6 +137,8 @@ export default async function Home() {
       </section>
 
       <Reviews />
+
+      <LatestArticles />
 
       <section
         aria-label="จุดเด่นของคลินิก"

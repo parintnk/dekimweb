@@ -119,12 +119,17 @@ export default async function ArticlePage({
   const minutes = Math.max(1, Math.round(chars / 700));
   const others = all.filter((a) => a.slug !== slug).slice(0, 2);
 
-  // ponytail: no datePublished — the source posts carry no dates and we don't invent them
+  // ponytail: DB rows carry a real created_at (mapped to updatedAt); static fallback posts
+  // don't — emit dates only when we actually have one. YMYL pages want a visible/marked date.
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.excerpt,
+    ...(article.updatedAt && {
+      datePublished: article.updatedAt,
+      dateModified: article.updatedAt,
+    }),
     ...(article.image && { image: `${SITE_URL}${article.image}` }),
     author: {
       "@type": "Person",
@@ -237,7 +242,7 @@ export default async function ArticlePage({
                   ทีมแพทย์ Dr. KIM Clinic
                 </span>
                 <span className="block text-xs text-ink-body">
-                  นพ.พงศ์พันธ์ ศิรินภาพันธ์ (ว.49913)
+                  เขียนและตรวจทานโดย นพ.พงศ์พันธ์ ศิรินภาพันธ์ (ว.49913)
                 </span>
               </span>
             </span>
@@ -246,6 +251,22 @@ export default async function ArticlePage({
               <FiClock size={13} aria-hidden />
               อ่านประมาณ {minutes} นาที
             </span>
+            {article.updatedAt && (
+              <>
+                <span
+                  className="hidden h-8 w-px bg-line sm:block"
+                  aria-hidden
+                />
+                <span className="text-xs text-ink-body">
+                  อัปเดต{" "}
+                  {new Intl.DateTimeFormat("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }).format(new Date(article.updatedAt))}
+                </span>
+              </>
+            )}
           </div>
         </div>
       </section>
