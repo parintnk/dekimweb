@@ -22,6 +22,37 @@ export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }
 
+// ponytail: pull Q&A pairs out of the rendered HTML FAQ section for FAQPage schema — the
+// articles store one HTML body, no separate faq column. Looks for an <h2> containing
+// "คำถามที่พบบ่อย" (or FAQ), then reads <h3>question</h3> + following prose until the next <h3>/<h2>.
+function extractFaqs(html: string): { q: string; a: string }[] {
+  const txt = (s: string) =>
+    s
+      .replace(/<[^>]*>/g, "")
+      .replace(/&ldquo;|&rdquo;/g, '"')
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+  const start = html.search(
+    /<h2[^>]*>[^<]*(?:คำถามที่พบบ่อย|FAQ)/i,
+  );
+  if (start === -1) return [];
+  const afterHeading = html
+    .slice(start)
+    .replace(/^<h2[^>]*>[\s\S]*?<\/h2>/, "");
+  const nextH2 = afterHeading.search(/<h2[^>]*>/);
+  const block = nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
+  const faqs: { q: string; a: string }[] = [];
+  const re = /<h3[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3[^>]*>|$)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(block))) {
+    const q = txt(m[1]);
+    const a = txt(m[2]);
+    if (q && a) faqs.push({ q, a });
+  }
+  return faqs;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -104,12 +135,55 @@ export default async function ArticlePage({
     mainEntityOfPage: `${SITE_URL}/blog/${article.slug}`,
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "หน้าแรก", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "บทความ",
+        item: `${SITE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: article.title,
+        item: `${SITE_URL}/blog/${article.slug}`,
+      },
+    ],
+  };
+
+  const faqs = bodyHtml ? extractFaqs(bodyHtml) : [];
+  const faqJsonLd = faqs.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }
+    : null;
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       {/* scrubbed to #article-body by gsap-effects — sits just under the sticky navbar */}
       <div
         id="reading-progress"
