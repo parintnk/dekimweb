@@ -52,7 +52,7 @@ export const sections: Record<string, Section> = {
   hero: {
     title: "ภาพหน้าแรก (Hero)",
     icon: FiMonitor,
-    note: "รูปใหญ่ด้านบนสุดของหน้าแรก — แสดงรายการแรกที่ไม่ได้ซ่อน",
+    note: "รูปใหญ่ด้านบนสุดของหน้าแรก — หลายรูปจะสไลด์สลับทุก 6 วินาทีตามลำดับ (รูปที่ซ่อนจะไม่แสดง)",
     table: "hero",
     labelKey: "alt",
     imageKey: "image_url",

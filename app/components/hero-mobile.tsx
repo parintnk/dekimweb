@@ -2,26 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import type { Hero } from "../lib/content";
-import { frameStyle } from "../lib/frame";
+import HeroSlides from "./hero-slides";
 
 // ponytail: mobile-only hero. Shares nothing with the desktop hero on purpose —
 // different crop, different composition. The sticky LINE bar moved to layout (mobile-cta-bar).
 // No card/box: text sits straight on the photo over an always-navy gradient, so it reads
 // the same in both themes.
-export default function HeroMobile({ hero }: { hero: Hero | null }) {
+export default function HeroMobile({ heroes }: { heroes: Hero[] }) {
   return (
     <section className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-navy md:hidden">
-      {hero ? (
-        <Image
-          src={hero.mobile}
-          alt={hero.alt}
-          fill
-          priority
-          quality={90}
-          // landscape desktop photo cropped into a portrait screen needs ~4× the width
-          sizes={`${Math.ceil((hero.mobile === hero.desktop ? 400 : 100) * (hero.mobileFrame?.zoom ?? 1))}vw`}
-          style={frameStyle(hero.mobileFrame)}
-        />
+      {heroes.length ? (
+        <HeroSlides slides={heroes} mobile />
       ) : (
         <Image
           src="/hero1.png"

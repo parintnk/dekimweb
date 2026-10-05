@@ -9,8 +9,8 @@ import Results from "./components/results";
 import Reviews from "./components/reviews";
 import Services from "./components/services";
 import { LINE_URL, externalLink } from "./contact";
-import { getHero, getPromotions } from "./lib/content";
-import { frameStyle } from "./lib/frame";
+import HeroSlides from "./components/hero-slides";
+import { getHeroes, getPromotions } from "./lib/content";
 
 // content comes from Supabase (admin-editable) — refresh at most once a minute
 export const revalidate = 60;
@@ -39,24 +39,17 @@ const trust = [
 ];
 
 export default async function Home() {
-  const [promos, hero] = await Promise.all([getPromotions(), getHero()]);
+  const [promos, heroes] = await Promise.all([getPromotions(), getHeroes()]);
   return (
     <>
-      <HeroMobile hero={hero} />
+      <HeroMobile heroes={heroes} />
 
       {/* ponytail: desktop hero fills the first viewport. 4.5rem = navbar height. Trust strip
           moved down under the Google reviews. */}
       <div className="md:flex md:h-[calc(100svh-4.5rem)] md:flex-col">
         <section className="relative hidden overflow-hidden bg-surface-2 md:flex md:min-h-0 md:flex-1">
-          {hero ? (
-            <Image
-              src={hero.desktop}
-              alt={hero.alt}
-              fill
-              priority
-              sizes={`${Math.ceil(100 * (hero.desktopFrame?.zoom ?? 1))}vw`}
-              style={frameStyle(hero.desktopFrame)}
-            />
+          {heroes.length ? (
+            <HeroSlides slides={heroes} />
           ) : (
             <Image
               src="/hero1.png"

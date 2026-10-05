@@ -235,24 +235,24 @@ export type Hero = {
   alt: string;
 };
 
-// null = no admin hero yet → the page keeps its original hard-coded /hero1.png framing
-export async function getHero(): Promise<Hero | null> {
-  const r = (
-    await rows<{
-      image_url: string;
-      mobile_image_url: string;
-      desktop_frame: Frame;
-      mobile_frame: Frame;
-      alt: string;
-    }>("hero")
-  ).find((r) => r.image_url);
-  if (!r) return null;
-  return {
-    desktop: r.image_url,
-    mobile: r.mobile_image_url || r.image_url,
-    desktopFrame: r.desktop_frame,
-    // no mobile upload → mobile reuses the desktop photo with its own (mobile) framing
-    mobileFrame: r.mobile_frame,
-    alt: r.alt,
-  };
+// every visible row with an image, in sort order. Empty = no admin hero yet → the page keeps
+// its original hard-coded /hero1.png framing.
+export async function getHeroes(): Promise<Hero[]> {
+  const data = await rows<{
+    image_url: string;
+    mobile_image_url: string;
+    desktop_frame: Frame;
+    mobile_frame: Frame;
+    alt: string;
+  }>("hero");
+  return data
+    .filter((r) => r.image_url)
+    .map((r) => ({
+      desktop: r.image_url,
+      // no mobile upload → mobile reuses the desktop photo with its own (mobile) framing
+      mobile: r.mobile_image_url || r.image_url,
+      desktopFrame: r.desktop_frame,
+      mobileFrame: r.mobile_frame,
+      alt: r.alt,
+    }));
 }
