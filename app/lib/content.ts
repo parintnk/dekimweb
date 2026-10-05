@@ -14,6 +14,7 @@ import {
   type TeamMember,
 } from "./static-content";
 import { unstable_cache } from "next/cache";
+import type { Frame } from "./frame";
 import { supabase } from "./supabase";
 
 // ponytail: every getter follows the same rule — rows in the table win, an empty table (or a
@@ -224,4 +225,34 @@ export async function getGallery(): Promise<GalleryPhoto[]> {
     w: r.width,
     h: r.height,
   }));
+}
+
+export type Hero = {
+  desktop: string;
+  mobile: string;
+  desktopFrame: Frame;
+  mobileFrame: Frame;
+  alt: string;
+};
+
+// null = no admin hero yet → the page keeps its original hard-coded /hero1.png framing
+export async function getHero(): Promise<Hero | null> {
+  const r = (
+    await rows<{
+      image_url: string;
+      mobile_image_url: string;
+      desktop_frame: Frame;
+      mobile_frame: Frame;
+      alt: string;
+    }>("hero")
+  ).find((r) => r.image_url);
+  if (!r) return null;
+  return {
+    desktop: r.image_url,
+    mobile: r.mobile_image_url || r.image_url,
+    desktopFrame: r.desktop_frame,
+    // no mobile upload → mobile reuses the desktop photo with its own (mobile) framing
+    mobileFrame: r.mobile_frame,
+    alt: r.alt,
+  };
 }

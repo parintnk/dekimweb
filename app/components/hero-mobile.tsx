@@ -1,23 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import type { Hero } from "../lib/content";
+import { frameStyle } from "../lib/frame";
 
 // ponytail: mobile-only hero. Shares nothing with the desktop hero on purpose —
 // different crop, different composition. The sticky LINE bar moved to layout (mobile-cta-bar).
 // No card/box: text sits straight on the photo over an always-navy gradient, so it reads
 // the same in both themes.
-export default function HeroMobile() {
+export default function HeroMobile({ hero }: { hero: Hero | null }) {
   return (
     <section className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-navy md:hidden">
-      <Image
-        src="/hero1.png"
-        alt=""
-        fill
-        priority
-        quality={90}
-        sizes="400vw"
-        className="-translate-y-[12%] object-cover object-[72%_30%]"
-      />
+      {hero ? (
+        <Image
+          src={hero.mobile}
+          alt={hero.alt}
+          fill
+          priority
+          quality={90}
+          // landscape desktop photo cropped into a portrait screen needs ~4× the width
+          sizes={`${Math.ceil((hero.mobile === hero.desktop ? 400 : 100) * (hero.mobileFrame?.zoom ?? 1))}vw`}
+          style={frameStyle(hero.mobileFrame)}
+        />
+      ) : (
+        <Image
+          src="/hero1.png"
+          alt=""
+          fill
+          priority
+          quality={90}
+          sizes="400vw"
+          className="-translate-y-[12%] object-cover object-[72%_30%]"
+        />
+      )}
       <div className="pointer-events-none absolute inset-0 hidden bg-navy/25 mix-blend-multiply dark:block" />
 
       {/* deep bottom wash — keeps her face clear, carries the type */}

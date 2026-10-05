@@ -4,6 +4,7 @@ import {
   FiCamera,
   FiFileText,
   FiImage,
+  FiMonitor,
   FiLayers,
   FiTag,
   FiUsers,
@@ -21,8 +22,11 @@ export type Field = {
     | "tags"
     | "article"
     | "rates"
-    | "mrates";
+    | "mrates"
+    | "frame";
   hint?: string;
+  src?: string[]; // frame: image keys to preview, first non-empty wins (mobile falls back to desktop)
+  aspect?: string; // frame: preview box aspect ratio, e.g. "16/9"
   onlySlug?: string; // field shows only when the record's slug matches (e.g. Mounjaro table)
 };
 
@@ -45,6 +49,46 @@ const sort: Field = {
 };
 
 export const sections: Record<string, Section> = {
+  hero: {
+    title: "ภาพหน้าแรก (Hero)",
+    icon: FiMonitor,
+    note: "รูปใหญ่ด้านบนสุดของหน้าแรก — แสดงรายการแรกที่ไม่ได้ซ่อน",
+    table: "hero",
+    labelKey: "alt",
+    imageKey: "image_url",
+    fields: [
+      {
+        key: "image_url",
+        label: "รูปเดสก์ท็อป",
+        type: "image",
+        hint: "แนะนำ 2400×1200 px แนวนอน — ข้อความอยู่ฝั่งซ้าย วางตัวแบบไว้ฝั่งขวา",
+      },
+      {
+        key: "mobile_image_url",
+        label: "รูปมือถือ (ไม่บังคับ)",
+        type: "image",
+        hint: "แนะนำ 1080×1920 px แนวตั้ง — เว้นว่าง = ใช้รูปเดสก์ท็อป",
+      },
+      {
+        key: "desktop_frame",
+        label: "จัดตำแหน่ง/ขนาด — เดสก์ท็อป",
+        type: "frame",
+        src: ["image_url"],
+        aspect: "16/9",
+        hint: "คลิกบนรูปเพื่อเลือกจุดโฟกัส",
+      },
+      {
+        key: "mobile_frame",
+        label: "จัดตำแหน่ง/ขนาด — มือถือ",
+        type: "frame",
+        src: ["mobile_image_url", "image_url"],
+        aspect: "1/2",
+        hint: "คลิกบนรูปเพื่อเลือกจุดโฟกัส",
+      },
+      { key: "alt", label: "คำอธิบายรูป", type: "text" },
+      sort,
+    ],
+  },
   services: {
     title: "บริการ",
     icon: FiLayers,

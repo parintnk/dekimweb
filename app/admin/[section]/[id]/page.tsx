@@ -26,6 +26,7 @@ import {
   FiTrash2,
   FiX,
 } from "react-icons/fi";
+import { DEFAULT_FRAME, frameStyle, type Frame } from "../../../lib/frame";
 import { supabase } from "../../../lib/supabase";
 import { blocksToHtml } from "../../blocks-doc";
 import ConfirmDialog from "../../confirm-dialog";
@@ -118,6 +119,73 @@ function SortableRateRow({
         className="mt-1 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-ink-body transition-colors hover:bg-red-500/10 hover:text-red-500"
       >
         <FiX size={14} aria-hidden />
+      </button>
+    </div>
+  );
+}
+
+// live crop preview: click the photo to set the focal point, sliders fine-tune. Uses the same
+// frameStyle() as the public hero, so what you see here is what the site renders.
+function FrameField({
+  src,
+  aspect,
+  value,
+  onChange,
+}: {
+  src: string;
+  aspect: string;
+  value: Frame | null;
+  onChange: (f: Frame) => void;
+}) {
+  const f = { ...DEFAULT_FRAME, ...value };
+  if (!src)
+    return <p className="text-xs text-ink-body">อัปโหลดรูปก่อน แล้วจึงจัดตำแหน่ง</p>;
+  const slider = (key: keyof Frame, label: string, min: number, max: number, step: number) => (
+    <label className="flex items-center gap-3 text-xs text-ink-body">
+      <span className="w-20 shrink-0">{label}</span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={f[key]}
+        onChange={(e) => onChange({ ...f, [key]: Number(e.target.value) })}
+        className="flex-1 cursor-pointer accent-[var(--color-accent)]"
+      />
+      <span className="w-12 text-right tabular-nums">
+        {key === "zoom" ? `${f.zoom.toFixed(2)}×` : `${f[key]}%`}
+      </span>
+    </label>
+  );
+  return (
+    <div className="space-y-3">
+      <div
+        onClick={(e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          onChange({
+            ...f,
+            x: Math.round(((e.clientX - r.left) / r.width) * 100),
+            y: Math.round(((e.clientY - r.top) / r.height) * 100),
+          });
+        }}
+        style={{ aspectRatio: aspect }}
+        className={`relative cursor-crosshair overflow-hidden rounded-lg border border-line bg-surface-2 ${
+          // portrait (mobile) preview stays phone-sized instead of filling the column
+          Number(aspect.split("/")[0]) < Number(aspect.split("/")[1]) ? "w-56" : "w-full"
+        }`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- preview of arbitrary admin URL */}
+        <img src={src} alt="" draggable={false} className="size-full" style={frameStyle(f)} />
+      </div>
+      {slider("x", "แนวนอน", 0, 100, 1)}
+      {slider("y", "แนวตั้ง", 0, 100, 1)}
+      {slider("zoom", "ซูม", 1, 3, 0.05)}
+      <button
+        type="button"
+        onClick={() => onChange(DEFAULT_FRAME)}
+        className="text-xs font-medium text-accent underline-offset-2 hover:underline"
+      >
+        รีเซ็ต
       </button>
     </div>
   );
@@ -218,6 +286,7 @@ export default function AdminRecordPage() {
             else if (f.type === "rates" || f.type === "mrates")
               blank[f.key] = [];
             else if (f.type === "article") blank[f.key] = null;
+            else if (f.type === "frame") blank[f.key] = DEFAULT_FRAME;
             else blank[f.key] = "";
           }
           setRow(blank);
@@ -325,6 +394,15 @@ export default function AdminRecordPage() {
                 ? (w, h) => setRow((r) => ({ ...r!, width: w, height: h }))
                 : undefined
             }
+          />
+        );
+      case "frame":
+        return (
+          <FrameField
+            src={(f.src ?? []).map((k) => row?.[k] as string).find(Boolean) ?? ""}
+            aspect={f.aspect ?? "16/9"}
+            value={value as Frame | null}
+            onChange={set}
           />
         );
       case "article":

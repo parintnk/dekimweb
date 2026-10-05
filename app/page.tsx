@@ -9,7 +9,8 @@ import Results from "./components/results";
 import Reviews from "./components/reviews";
 import Services from "./components/services";
 import { LINE_URL, externalLink } from "./contact";
-import { getPromotions } from "./lib/content";
+import { getHero, getPromotions } from "./lib/content";
+import { frameStyle } from "./lib/frame";
 
 // content comes from Supabase (admin-editable) — refresh at most once a minute
 export const revalidate = 60;
@@ -38,23 +39,34 @@ const trust = [
 ];
 
 export default async function Home() {
-  const promos = await getPromotions();
+  const [promos, hero] = await Promise.all([getPromotions(), getHero()]);
   return (
     <>
-      <HeroMobile />
+      <HeroMobile hero={hero} />
 
       {/* ponytail: desktop hero fills the first viewport. 4.5rem = navbar height. Trust strip
           moved down under the Google reviews. */}
       <div className="md:flex md:h-[calc(100svh-4.5rem)] md:flex-col">
         <section className="relative hidden overflow-hidden bg-surface-2 md:flex md:min-h-0 md:flex-1">
-          <Image
-            src="/hero1.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-right"
-          />
+          {hero ? (
+            <Image
+              src={hero.desktop}
+              alt={hero.alt}
+              fill
+              priority
+              sizes={`${Math.ceil(100 * (hero.desktopFrame?.zoom ?? 1))}vw`}
+              style={frameStyle(hero.desktopFrame)}
+            />
+          ) : (
+            <Image
+              src="/hero1.png"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-right"
+            />
+          )}
           {/* ponytail: photos have baked-in cream backgrounds — on a dark page they glare.
                 A multiply tint pulls them toward the surface without killing her skin. */}
           <div className="pointer-events-none absolute inset-0 hidden bg-navy/25 mix-blend-multiply dark:block" />
