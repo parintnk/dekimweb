@@ -29,7 +29,7 @@ export const serviceRates: Record<string, { fit: string; rows: RateRow[] }> = {
       { name: "Neuramis Deep", unit: "1 CC", price: "3,990" },
       { name: "Neuramis Volume", unit: "1 CC", price: "4,990" },
       { name: "Elavie", unit: "1 CC", price: "6,990" },
-      { name: "Berotero", unit: "1 CC", price: "12,900" },
+      { name: "Belotero", unit: "1 CC", price: "12,900" },
       { name: "Restylane ทุกรุ่น", unit: "1 CC", price: "12,900" },
     ],
   },
