@@ -15,6 +15,7 @@ export type Field = {
   label: string;
   type:
     | "text"
+    | "select"
     | "textarea"
     | "image"
     | "number"
@@ -25,6 +26,7 @@ export type Field = {
     | "mrates"
     | "frame";
   hint?: string;
+  options?: string[]; // select: the fixed choices
   src?: string[]; // frame: image keys to preview, first non-empty wins (mobile falls back to desktop)
   aspect?: string; // frame: preview box aspect ratio, e.g. "16/9"
   onlySlug?: string; // field shows only when the record's slug matches (e.g. Mounjaro table)
@@ -219,7 +221,24 @@ export const sections: Record<string, Section> = {
         hint: "เช่น mounjaro-tips — ห้ามซ้ำ",
       },
       { key: "title", label: "ชื่อบทความ", type: "text" },
-      { key: "category", label: "หมวด", type: "text" },
+      {
+        key: "category",
+        label: "หมวด",
+        type: "select",
+        // ponytail: fixed list so the same topic can't split into near-duplicate labels (it did —
+        // that broke same-category "บทความอื่น ๆ"). New category = add it here.
+        options: [
+          "Weight Management",
+          "โบท็อกซ์",
+          "ฟิลเลอร์",
+          "Biostimulator",
+          "Energy-Based Device",
+          "ยกกระชับผิว",
+          "โปรแกรมดูแลผิว",
+          "ความรู้ด้านความงาม",
+          "รีวิวจากผู้รับบริการ",
+        ],
+      },
       { key: "excerpt", label: "คำโปรย", type: "textarea" },
       {
         key: "image_url",

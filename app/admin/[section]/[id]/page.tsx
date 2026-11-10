@@ -438,6 +438,26 @@ export default function AdminRecordPage() {
             onChange={set}
           />
         );
+      case "select": {
+        const v = (value as string) ?? "";
+        const opts = f.options ?? [];
+        return (
+          <select
+            value={v}
+            onChange={(e) => set(e.target.value)}
+            className={`${inputCls} cursor-pointer`}
+          >
+            <option value="">— เลือก —</option>
+            {/* keep an off-list legacy value visible instead of silently blanking it */}
+            {v && !opts.includes(v) && <option value={v}>{v}</option>}
+            {opts.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+        );
+      }
       case "textarea":
         return (
           <textarea

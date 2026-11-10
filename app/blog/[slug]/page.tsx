@@ -117,7 +117,15 @@ export default async function ArticlePage({
   }
   // ponytail: Thai has no spaces to count words — chars/700 is a fair minutes estimate
   const minutes = Math.max(1, Math.round(chars / 700));
-  const others = all.filter((a) => a.slug !== slug).slice(0, 2);
+  // same-category posts first (sort is stable, so newest-first order holds within each group)
+  const others = all
+    .filter((a) => a.slug !== slug)
+    .sort(
+      (a, b) =>
+        Number(b.category === article.category) -
+        Number(a.category === article.category),
+    )
+    .slice(0, 2);
 
   // ponytail: DB rows carry a real created_at (mapped to updatedAt); static fallback posts
   // don't — emit dates only when we actually have one. YMYL pages want a visible/marked date.
