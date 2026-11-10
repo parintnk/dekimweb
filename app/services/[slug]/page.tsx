@@ -9,15 +9,34 @@ import {
   FiCheck,
   FiChevronRight,
 } from "react-icons/fi";
+import { blocksToHtml } from "../../admin/blocks-doc";
 import SectionBackdrop from "../../components/section-backdrop";
 import { LINE_URL, externalLink } from "../../contact";
 import { getServiceDetails } from "../../lib/content";
+import { extractFaqs, faqJsonLd } from "../../lib/faq";
 import { serviceDetails } from "../details";
+import type { RateRow } from "../rates";
 
 export const revalidate = 60;
 
 export function generateStaticParams() {
   return serviceDetails.map((s) => ({ slug: s.slug }));
+}
+
+// ponytail: the Thai phrase people actually search, where it isn't just "<subtitle> เชียงใหม่".
+// Slugs listed here also put their starting price in <title> (kept off weight-management on purpose:
+// GLP-1 pens are a special-controlled drug, so no drug price in search snippets).
+const KEYWORD: Record<string, string> = {
+  botox: "ฉีดโบท็อกซ์ เชียงใหม่",
+  filler: "ฉีดฟิลเลอร์ เชียงใหม่",
+};
+
+// lowest price in the admin-edited rate rows, e.g. "3,590" — so the title never drifts from the table
+function priceFrom(rates: RateRow[] = []) {
+  const n = rates
+    .map((r) => Number(r.price.replace(/[^\d.]/g, "")))
+    .filter((x) => x > 0);
+  return n.length ? Math.min(...n).toLocaleString("en-US") : null;
 }
 
 export async function generateMetadata({
@@ -28,8 +47,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const service = (await getServiceDetails()).find((s) => s.slug === slug);
   if (!service) return { title: "บริการ" };
+  const from = KEYWORD[slug] && priceFrom(service.rates);
   return {
-    title: `${service.title} (${service.subtitle}) เชียงใหม่`,
+    title: from
+      ? {
+          absolute: `${KEYWORD[slug]} ราคาเริ่ม ${from} บาท · แพทย์ฉีดเองทุกเคส | Dr. KIM Clinic`,
+        }
+      : `${service.title} (${service.subtitle}) เชียงใหม่`,
     description: service.excerpt,
     openGraph: {
       title: `${service.title} (${service.subtitle}) — Dr. KIM Clinic เชียงใหม่`,
@@ -55,9 +79,18 @@ export default async function ServiceDetailPage({
   const priceHref =
     slug === "weight-management" ? "/services#mounjaro" : `/services#${slug}`;
   const others = all.filter((s) => s.slug !== slug && s.image).slice(0, 2);
+  const faqLd = faqJsonLd(
+    extractFaqs(service.html?.trim() || blocksToHtml(service.blocks ?? [])),
+  );
 
   return (
     <>
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
       {/* scrubbed to #article-body by gsap-effects — sits just under the sticky navbar */}
       <div
         id="reading-progress"
@@ -91,6 +124,10 @@ export default async function ServiceDetailPage({
 
           <h1 className="enter-2 mt-6 font-display text-4xl tracking-tight text-ink sm:text-5xl">
             {service.title}
+            {/* the Thai search phrase lives in the H1 too — "Botox" alone tells Google nothing local */}
+            <span className="mt-3 block font-sans text-xl font-semibold tracking-normal text-accent sm:text-2xl">
+              {KEYWORD[slug] ?? `${service.subtitle} เชียงใหม่`}
+            </span>
           </h1>
 
           <p className="enter-3 mt-4 max-w-2xl text-sm leading-7 text-ink-body sm:text-base sm:leading-8">
