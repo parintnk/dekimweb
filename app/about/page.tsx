@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 // ponytail: only facts we can source — Google rating, review count, opening hours. No invented history.
 const stats = [
   { value: "5.0", label: "คะแนนรีวิวบน Google" },
-  { value: "68+", label: "รีวิวจากผู้ใช้บริการจริง" },
+  { value: "79+", label: "รีวิวจากผู้ใช้บริการจริง" },
   { value: "ทุกวัน", label: "เปิด 11.00 – 20.00 น. (รับเคสสุดท้าย 19.30 น.)" },
 ];
 

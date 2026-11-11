@@ -9,7 +9,7 @@ import { GOOGLE_REVIEWS_URL, LINE_URL, externalLink } from "../contact";
 export const metadata: Metadata = {
   title: "รีวิวจากลูกค้า",
   description:
-    "รีวิวจริงจากผู้ใช้บริการ Dr. KIM Clinic เชียงใหม่ — คะแนน 5.0 จาก 68 รีวิวบน Google",
+    "รีวิวจริงจากผู้ใช้บริการ Dr. KIM Clinic เชียงใหม่ — คะแนน 5.0 จาก 79 รีวิวบน Google",
 };
 
 // ponytail: themes pulled from the actual Google reviews on this site — not marketing copy.
@@ -25,7 +25,7 @@ const highlights = [
 const trustPoints = [
   "รีวิวทั้งหมดมาจาก Google Maps ซึ่งคลินิกแก้ไขหรือลบเองไม่ได้",
   "ทุกรีวิวมาจากผู้ที่เดินทางมาใช้บริการจริงที่คลินิก",
-  "ข้อมูลอัปเดตล่าสุด กรกฎาคม 2026 — อ่านรีวิวสดได้ที่ Google",
+  "ข้อมูลอัปเดตล่าสุด พฤศจิกายน 2026 — อ่านรีวิวสดได้ที่ Google",
 ];
 
 export const revalidate = 60;

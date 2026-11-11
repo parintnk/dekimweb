@@ -187,7 +187,7 @@ export default function ContactPage() {
               },
               {
                 title: "รีวิวจากลูกค้า",
-                detail: "คะแนน 5.0 จาก 68 รีวิวบน Google",
+                detail: "คะแนน 5.0 จาก 79 รีวิวบน Google",
                 href: "/reviews",
               },
             ].map((c) => (

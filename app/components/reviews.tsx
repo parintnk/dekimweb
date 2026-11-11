@@ -4,42 +4,61 @@ import { FiArrowRight, FiStar } from "react-icons/fi";
 import { GOOGLE_REVIEWS_URL, externalLink } from "../contact";
 import SectionBackdrop from "./section-backdrop";
 
-// ponytail: copied from Google on 2026-07-17 — excerpts trimmed, attributed, avatars saved to
+// ponytail: copied from Google on 2026-07-17, dates and count refreshed 2026-11-11 — excerpts trimmed, attributed, avatars saved to
 // public/reviews (2 of them are Google's own letter avatars, not photos). This goes stale and new
 // reviews never appear. Swap for Google Places API when someone is willing to run an API key.
 const reviews = [
   {
     name: "Chanathimad Intarot",
     avatar: "/reviews/chanathimad.png",
-    date: "1 เดือนที่แล้ว",
+    date: "5 เดือนที่แล้ว",
     tag: "ลดน้ำหนัก",
     text: "เคยลองมาหลายวิธีแต่ไม่ลง เลยลองมาปรึกษาคุณหมอคิมเรื่องปากกาลดน้ำหนัก ชอบที่นี่ตรงที่มีการติดตามผลอย่างต่อเนื่อง ใครอยากลดน้ำหนักแบบปลอดภัยภายใต้การดูแลของแพทย์แนะนำเลย",
   },
   {
     name: "Win Worrawit",
     avatar: "/reviews/win.png",
-    date: "3 เดือนที่แล้ว",
+    date: "7 เดือนที่แล้ว",
     tag: "Botox",
     text: "ผมมาใช้บริการฉีดโบท็อก ก่อนจะฉีดก็เปิดกล่องใหม่ให้ดูต่อหน้า เห็นเลยว่าเป็นผลิตภัณฑ์แท้ ตรวจวันหมดอายุ เจ้าหน้าที่ทุกท่านช่วยเหลือและดูแลดีมากครับ",
+  },
+  // added 2026-11-11 from Google; no avatar saved, the card falls back to the name's initial
+  {
+    name: "chaiwat prathom",
+    date: "ปีที่แล้ว",
+    tag: "Filler",
+    text: "คุณหมอมือเบามากครับ ไปเติมคางกับใต้ตา ไม่ค่อยมีรอยช้ำเลย แถมรับประกันของแท้ แสกนกล่องต่อหน้าอีก ไว้จะเข้าไปใช้บริการอีกครับ",
+  },
+  {
+    name: "Choi Ampere",
+    date: "ปีที่แล้ว",
+    tag: "Botox",
+    text: "คุณหมอและพนักงานให้บริการดี เป็นกันเอง ไม่ยัดเยียดขายคอร์สหรือกดดันให้ซื้อเพิ่มเลย ที่สำคัญคือ ใช้ของแท้ มีการแกะกล่องให้ดูต่อหน้า หลังทำก็มีการติดตามผล ใครมองหาที่ฉีดโบท็อกดี ๆ แนะนำเลยค่ะ",
+  },
+  {
+    name: "Wipaporn Srisontorn",
+    date: "ปีที่แล้ว",
+    tag: "Filler",
+    text: "ใช้ฟิลเลอร์แท้ แกะกล่องต่อหน้า ดูแลโดยหมอคิมทุกเคส",
   },
   {
     name: "Suphissara Sompong",
     avatar: "/reviews/suphissara.png",
-    date: "1 เดือนที่แล้ว",
+    date: "5 เดือนที่แล้ว",
     tag: "หัตถการ",
     text: "หมอมือเบามาก ให้ข้อมูลผลิตภัณฑ์ดีมาก แรก ๆ เรากังวลกับหัตถการนี้ แต่พอได้ข้อมูลที่เพียงพอ ทำให้เราคลายกังวล เราจึงตัดสินใจทำที่นี่",
   },
   {
     name: "HeliCopter",
     avatar: "/reviews/helicopter.png",
-    date: "3 เดือนที่แล้ว",
+    date: "7 เดือนที่แล้ว",
     tag: "บริการ",
     text: "บริการประทับใจมากครับ พี่ ๆ พนักงานในร้านดูแลดีมาก คุณหมอมือเบา ชวนคุยตลอดการรักษา คลินิกสะอาดมากครับ",
   },
   {
     name: "porrawisa pichai",
     avatar: "/reviews/porrawisa.png",
-    date: "1 เดือนที่แล้ว",
+    date: "5 เดือนที่แล้ว",
     tag: "ลดน้ำหนัก",
     text: "ปากกาลดน้ำหนักของที่นี่เห็นผลจริง และที่สำคัญคือมีคุณหมอคอยติดตามอาการตลอด ทำให้ไม่กังวลเรื่องผลข้างเคียง พี่ ๆ พนักงานก็น่ารัก บริการเป็นกันเองสุด ๆ",
   },
@@ -90,7 +109,7 @@ export default function Reviews() {
               <Stars label="5 จาก 5 ดาว" />
             </div>
             <p className="mt-4 text-sm leading-6">
-              จาก <span className="tabular-nums text-white">68 รีวิว</span> บน
+              จาก <span className="tabular-nums text-white">79 รีวิว</span> บน
               Google
             </p>
             <p className="mt-1 text-xs leading-6 text-white/50">
@@ -112,13 +131,22 @@ export default function Reviews() {
               className="reveal flex flex-col rounded-2xl border border-line bg-surface-2 p-6"
             >
               <div className="flex items-center gap-3">
-                <Image
-                  src={r.avatar}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="size-10 shrink-0 rounded-full bg-surface-3 object-cover"
-                />
+                {r.avatar ? (
+                  <Image
+                    src={r.avatar}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="size-10 shrink-0 rounded-full bg-surface-3 object-cover"
+                  />
+                ) : (
+                  <span
+                    aria-hidden
+                    className="flex size-10 shrink-0 items-center justify-center rounded-full bg-navy text-sm font-medium text-white"
+                  >
+                    {r.name[0].toUpperCase()}
+                  </span>
+                )}
                 <div className="min-w-0">
                   <p className="truncate font-medium text-ink">{r.name}</p>
                   <p className="text-xs text-ink-body">{r.date}</p>
