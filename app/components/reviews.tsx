@@ -7,7 +7,7 @@ import SectionBackdrop from "./section-backdrop";
 // ponytail: copied from Google on 2026-07-17, dates and count refreshed 2026-11-11 — excerpts trimmed, attributed, avatars saved to
 // public/reviews (2 of them are Google's own letter avatars, not photos). This goes stale and new
 // reviews never appear. Swap for Google Places API when someone is willing to run an API key.
-const reviews = [
+export const reviews = [
   {
     name: "Chanathimad Intarot",
     avatar: "/reviews/chanathimad.png",
