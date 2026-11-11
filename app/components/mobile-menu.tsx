@@ -45,7 +45,7 @@ export default function MobileMenu({ links }: { links: MenuLink[] }) {
         }`}
       />
 
-      <aside
+      <div
         role="dialog"
         aria-modal="true"
         aria-label="เมนูหลัก"
@@ -120,7 +120,7 @@ export default function MobileMenu({ links }: { links: MenuLink[] }) {
             เปิดทุกวัน 11.00 – 20.00 น.
           </p>
         </div>
-      </aside>
+      </div>
     </>
   );
 
