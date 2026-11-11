@@ -70,6 +70,11 @@ export default function GoogleTranslate() {
       location.href = a.href;
     };
     document.addEventListener("click", forceFullNav, true);
+    const cleanup = () => document.removeEventListener("click", forceFullNav, true);
+
+    // ponytail: no googtrans cookie = Thai, nothing to translate; skip Google's ~200KB widget.
+    // The patches above stay on for Chrome's built-in translate, which also wraps text in <font>.
+    if (!document.cookie.includes("googtrans=/th/")) return cleanup;
 
     if (!document.getElementById("google_translate_element")) {
       const div = document.createElement("div");
@@ -99,7 +104,7 @@ export default function GoogleTranslate() {
       document.body.appendChild(script);
     }
 
-    return () => document.removeEventListener("click", forceFullNav, true);
+    return cleanup;
   }, []);
 
   return null;

@@ -33,7 +33,11 @@ export default function HeroSlides({
         src={mobile ? s.mobile : s.desktop}
         alt={n === i ? s.alt : ""}
         fill
-        priority={n === 0}
+        // ponytail: the page renders both the mobile and desktop hero and CSS-hides one, so eager
+        // also fetches the hidden one. Fine now that the loader shrinks it to ~70KB; lazy instead
+        // made the LCP image wait for layout.
+        loading={n === 0 ? "eager" : undefined}
+        fetchPriority={n === 0 ? "high" : undefined}
         quality={mobile ? 90 : undefined}
         sizes={`${Math.ceil(base * (frame?.zoom ?? 1))}vw`}
         style={frameStyle(frame)}
