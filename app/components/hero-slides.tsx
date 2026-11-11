@@ -15,6 +15,14 @@ export default function HeroSlides({
   mobile?: boolean;
 }) {
   const [i, setI] = useState(0);
+  // ponytail: only the first slide renders at first so later slides don't share bandwidth with the LCP
+  // image; they mount 2.5s in, well before the first crossfade at 6s.
+  const [all, setAll] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setAll(true), 2500);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (slides.length < 2) return;
@@ -23,7 +31,7 @@ export default function HeroSlides({
     return () => clearInterval(t);
   }, [slides.length]);
 
-  return slides.map((s, n) => {
+  return (all ? slides : slides.slice(0, 1)).map((s, n) => {
     const frame = mobile ? s.mobileFrame : s.desktopFrame;
     // landscape desktop photo cropped into a portrait screen needs ~4× the width
     const base = mobile && s.mobile === s.desktop ? 400 : 100;
@@ -33,10 +41,10 @@ export default function HeroSlides({
         src={mobile ? s.mobile : s.desktop}
         alt={n === i ? s.alt : ""}
         fill
-        // ponytail: the page renders both the mobile and desktop hero and CSS-hides one, so eager
-        // also fetches the hidden one. Fine now that the loader shrinks it to ~70KB; lazy instead
-        // made the LCP image wait for layout.
-        loading={n === 0 ? "eager" : undefined}
+        // ponytail: the page renders both the mobile and desktop hero and CSS-hides one. Eager
+        // only on the mobile one: phones skip the hidden desktop image (lazy + display:none never
+        // loads), desktops pay ~100KB for the hidden mobile one. Mobile is what PageSpeed scores.
+        loading={n === 0 && mobile ? "eager" : undefined}
         fetchPriority={n === 0 ? "high" : undefined}
         quality={mobile ? 90 : undefined}
         sizes={`${Math.ceil(base * (frame?.zoom ?? 1))}vw`}

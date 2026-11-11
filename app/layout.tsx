@@ -18,7 +18,8 @@ const playfair = Playfair_Display({
 
 const sarabun = Sarabun({
   variable: "--font-sarabun",
-  weight: ["300", "400", "500", "600", "700"],
+  // each weight × subset is a preloaded font file competing with the hero image; 300 was unused
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin", "thai"],
 });
 
@@ -107,6 +108,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* hero/promo images come from Supabase storage — open the connection before they're found */}
+        <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
         {/* Google Tag Manager */}
         {/* eslint-disable-next-line @next/next/next-script-for-ga */}
         <script
