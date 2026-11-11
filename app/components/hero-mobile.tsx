@@ -19,7 +19,7 @@ export default function HeroMobile({ heroes }: { heroes: Hero[] }) {
           alt=""
           fill
           priority
-          quality={90}
+          quality={80}
           sizes="400vw"
           className="-translate-y-[12%] object-cover object-[72%_30%]"
         />

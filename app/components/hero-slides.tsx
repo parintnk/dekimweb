@@ -46,7 +46,7 @@ export default function HeroSlides({
         // loads), desktops pay ~100KB for the hidden mobile one. Mobile is what PageSpeed scores.
         loading={n === 0 && mobile ? "eager" : undefined}
         fetchPriority={n === 0 ? "high" : undefined}
-        quality={mobile ? 90 : undefined}
+        quality={mobile ? 80 : undefined}
         sizes={`${Math.ceil(base * (frame?.zoom ?? 1))}vw`}
         style={frameStyle(frame)}
         className={`transition-opacity duration-1000 ${n === i ? "opacity-100" : "opacity-0"}`}

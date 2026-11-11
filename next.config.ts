@@ -9,8 +9,8 @@ const nextConfig: NextConfig = {
     // Vercel optimizer quota hit (402); Supabase storage resizes uploads instead
     loader: "custom",
     loaderFile: "./app/lib/image-loader.ts",
-    // mobile hero renders at quality 90; anything not listed here is coerced to 75
-    qualities: [75, 90],
+    // mobile hero renders at quality 80 (90 was ~50% heavier for the LCP image); anything not listed here is coerced to 75
+    qualities: [75, 80],
     // uploaded admin images live in Supabase storage
     remotePatterns: [
       { protocol: "https", hostname: "zvpnyslpsgazoyvwnxuq.supabase.co" },
