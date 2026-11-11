@@ -68,8 +68,8 @@ export default async function Footer() {
             <Image
               src="/Ci DR KIM 01.png"
               alt="Dr. KIM Clinic"
-              width={512}
-              height={512}
+              width={558}
+              height={264}
               className="h-22 w-auto"
             />
 

@@ -29,16 +29,16 @@ function Logo() {
       <Image
         src="/Ci DR KIM navy.png"
         alt="Dr. KIM Clinic"
-        width={512}
-        height={512}
+        width={558}
+        height={264}
         priority
         className="h-16 w-auto py-2 sm:h-18 dark:hidden"
       />
       <Image
         src="/Ci DR KIM 01.png"
         alt="Dr. KIM Clinic"
-        width={512}
-        height={512}
+        width={558}
+        height={264}
         priority
         className="hidden h-16 w-auto py-2 sm:h-18 dark:block"
       />

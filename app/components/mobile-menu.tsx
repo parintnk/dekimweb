@@ -59,15 +59,15 @@ export default function MobileMenu({ links }: { links: MenuLink[] }) {
             <Image
               src="/Ci DR KIM navy.png"
               alt="Dr. KIM Clinic"
-              width={512}
-              height={512}
+              width={558}
+              height={264}
               className="h-9 w-auto dark:hidden"
             />
             <Image
               src="/Ci DR KIM 01.png"
               alt="Dr. KIM Clinic"
-              width={512}
-              height={512}
+              width={558}
+              height={264}
               className="hidden h-9 w-auto dark:block"
             />
           </span>
