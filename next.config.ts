@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   experimental: { imgOptTimeoutInSeconds: 30 },
   // llmstxt.org: every page has a Markdown twin at "<url>.md" ("/" → "/index.md"), served by
   // app/md/[...path]/route.ts. beforeFiles so "/services/botox.md" never hits the [slug] page.
+  // "/index" also serves the homepage; send it (and its old canonical) to "/"
+  async redirects() {
+    return [{ source: "/index", destination: "/", permanent: true }];
+  },
   async rewrites() {
     return {
       beforeFiles: [{ source: "/:path*\\.md", destination: "/md/:path*" }],

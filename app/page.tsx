@@ -15,6 +15,9 @@ import { getHeroes, getPromotions } from "./lib/content";
 // content comes from Supabase (admin-editable) — refresh at most once a minute
 export const revalidate = 60;
 
+// layout's "./" canonical resolves to "/index" on the root route; Google then picked www as canonical
+export const metadata = { alternates: { canonical: "/" } };
+
 const trust = [
   {
     icon: FiUser,
